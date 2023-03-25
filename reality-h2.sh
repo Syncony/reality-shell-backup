@@ -98,7 +98,7 @@ wget -qO xray.zip https://github.com/XTLS/Xray-core/releases/download/${Version}
 
 unzip -o xray.zip && rm xray.zip
 
-wget -qO config.json  https://file.snlax.com/reality-h2.json
+wget -qO config.json  https://raw.githubusercontent.com/WangHelloo/reality-shell-backup/main/reality-h2.json
 
 choose_network
 
