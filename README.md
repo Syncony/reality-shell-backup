@@ -7,3 +7,8 @@
 ```
 bash <(curl -sL https://raw.githubusercontent.com/WangHelloo/reality-shell-backup/main/reality-h2.sh)
 ```
+
+主要依赖:
+
+[Xray-core](https://github.com/XTLS/Xray-core)
+[Xray-examples](https://github.com/chika0801/Xray-examples)
