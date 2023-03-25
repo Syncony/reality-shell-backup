@@ -5,5 +5,5 @@
 
 用法:
 ```
-bash <(curl -sL )
+bash <(curl -sL https://raw.githubusercontent.com/WangHelloo/reality-shell-backup/main/reality-h2.sh)
 ```
