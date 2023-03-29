@@ -155,7 +155,7 @@ Share="vless://"${UUID}"@"${IP}":"${Port}"?security=reality&encryption=none&pbk=
 [[ ${network_mode} == "grpc" ]] && Share=${Share}"&mode=gun&serviceName="${Proxy_Path}
 [[ ${network_mode} == "tcp" ]] && Share=${Share}"&flow=xtls-rprx-vision"
 echo -e "crontab: @reboot "${NOW_DIR}"xray -c "${NOW_DIR}"config.json"
-echo -e "运行命令: ./xray -c config.json"
+echo -e "运行命令: ./xray -c config.json&"
 echo -e "Xray 已在后台运行,请自行配置守护进程"
 echo -e "如需结束进程可通过ps -aux|grep xray查看PID 或 直接Killall xray"
 echo -e "分享链接:\n"${Share}
