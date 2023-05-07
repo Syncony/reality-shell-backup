@@ -36,7 +36,8 @@
                     "dest": "www.lovelive-anime.jp:443",
                     "xver": 0,
                     "serverNames": [
-                        "www.lovelive-anime.jp"
+                        "www.lovelive-anime.jp",
+                        ""
                     ],
                     "privateKey": "2KZ4uouMKgI8nR-LDJNP1_MHisCJOmKGj9jUjZLncVU",
                     "shortIds": [
