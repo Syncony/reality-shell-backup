@@ -58,7 +58,7 @@ function getPK(){
 
 network_mode=""
 function choose_network(){
-echo -e "\n"
+echo -e "\n❗gRPC/H2 建议在有优化回程路由（如 CN2-GIA、AS9929/AS10099、CMI/CMIN2、AS4837 等）的VPS上使用。并且VPS所在的地区距离你的位置越近越好。即使你的VPS满足以上条件，仍然不能避免断流现象。\n"
 read -e -p "1.TCP 2.H2 3.GRPC 请键入相应数字选择传输协议:" networkmode
 case ${networkmode} in
     1)
