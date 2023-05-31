@@ -58,8 +58,8 @@ else
         bit="arm64-v8a"
 fi
 
-rm x_xray -R
-mkdir x_xray && cd x_xray
+rm x_xray_ss -R
+mkdir x_xray_ss && cd x_xray_ss
 
 wget -qO xray.zip https://github.com/XTLS/Xray-core/releases/download/${Version}/Xray-linux-${bit}.zip
 
