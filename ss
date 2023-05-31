@@ -164,7 +164,7 @@ cat > config.json <<EOF
 EOF
 
 NOW_DIR=$(cd $(dirname $0); pwd)"/"
-ssspath=/etc/systemd/system/x_xray.service
+ssspath=/etc/systemd/system/x_xray_ss.service
 rm $ssspath
 touch $ssspath
 cat >$ssspath <<EOF
@@ -185,7 +185,7 @@ LimitNOFILE=infinity
 WantedBy=multi-user.target
 EOF
 
-systemctl enable --now x_xray
+systemctl enable --now x_xray_ss
 
 IP=`curl -s ip.sb`
 [ -z `echo ${IP}|grep ":"`  ] || IP="["${IP}"]"
