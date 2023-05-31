@@ -54,6 +54,7 @@ function getPK(){
     PIK=`sed -n "2p" ./tmp`
     PBK=`sed -n "4p" ./tmp`
     rm tmp
+    rm key
 }
 
 network_mode=""
