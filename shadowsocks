@@ -191,14 +191,11 @@ echo $passwd> str
 sed -i "s/\+/%2B/g" str
 passwd=`cat str`
 rm str
-ipv4=`curl -s ip.sb -4`
-ipv6=`curl -s ip.sb -6`
+ip=`curl -s ip.sb`
 encode=`curl -sL https://www.toolhelper.cn/EncodeDecode/Base64Encode -d "encode=$method:$passwd" -d "encoding=UTF-8"|jq .Data -r`
 
 echo -e "\nPort:"$port
 echo -e "\nMethod:"$method
 echo -e "\nPassword:"$passwd
-echo -e "\nIPv4:"$ipv4
-echo -e "\nIPv6:""["$ipv6"]"
-echo -e "\n分享链接(v4):ss://${encode}@${ipv4}:${port}#SS"
-echo -e "\n分享链接(v6):ss://${encode}@${ipv6}:${port}#SS"
+echo -e "\nIP:"$ip
+echo -e "\n分享链接(v4):ss://${encode}@${ip}:${port}#SS"
