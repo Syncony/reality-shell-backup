@@ -126,7 +126,7 @@ depend() {
 
 start() {
     ebegin "Starting Xray"
-    start-stop-daemon --start --exec '/etc/Xray/xray -- -config /etc/Xray/config.json > /dev/null 2>&1'
+    start-stop-daemon --start --exec /etc/Xray/xray -- -config /etc/Xray/config.json > /dev/null 2>&1
     eend $?
 }
 
@@ -140,7 +140,7 @@ restart() {
     ebegin "Restarting Xray"
     start-stop-daemon --stop --exec '/etc/Xray/xray'
     sleep 1
-    start-stop-daemon --start --exec '/etc/Xray/xray -- -config /etc/Xray/config.json > /dev/null 2>&1'
+    start-stop-daemon --start --exec /etc/Xray/xray -- -config /etc/Xray/config.json > /dev/null 2>&1
     eend $?
 }
 EOF
