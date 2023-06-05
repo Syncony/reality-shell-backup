@@ -1,0 +1,4 @@
+wget -O x_xray_ss_alpine.sh https://raw.githubusercontent.com/WangHelloo/reality-shell-backup/main/shadowsocks_alpine
+chmod +x x_xray_ss_alpine.sh
+./x_xray_ss_alpine.sh
+rm x_xray_ss_alpine.sh
