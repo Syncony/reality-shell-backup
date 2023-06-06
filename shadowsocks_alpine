@@ -2,7 +2,7 @@
 # 更新软件源
 apk update
 # 安装依赖项
-apk add wget unzip openrc curl jq openssl sed
+apk add wget unzip openrc curl jq openssl sed sudo
 
 Version=`curl -sL https://api.github.com/repos/XTLS/Xray-core/releases|jq .[0].tag_name -r`
 if [ -z $Version ];then
