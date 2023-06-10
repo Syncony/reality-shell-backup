@@ -150,7 +150,6 @@ chmod +x /etc/init.d/Xray
 
 # 添加到开机启动项中
 rc-update add Xray default
-rc-service Xray restart > /dev/null 2>&1
 
 echo "安装完成！"
 echo -e "\nPort:"$port
@@ -158,3 +157,4 @@ echo -e "\nMethod:"$method
 echo -e "\nPassword:"$ipasswd
 echo -e "\nIP:"$ip
 echo -e "\n分享链接(v4):ss://${encode}@${ip}:${port}#SS"
+echo -e "\n手动执行rc-service Xray restart > /dev/null 2>&1立即启动"
