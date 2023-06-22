@@ -99,7 +99,90 @@ wget -qO xray.zip https://github.com/XTLS/Xray-core/releases/download/${Version}
 
 unzip -o xray.zip && rm xray.zip
 
-wget -qO config.json  https://raw.githubusercontent.com/WangHelloo/reality-shell-backup/main/reality-h2.json
+cat > config.json <<EOF
+{
+    "log": {
+        "loglevel": "warning"
+    },
+    "routing": {
+        "domainStrategy": "IPIfNonMatch",
+        "rules": [
+            {
+                "type": "field",
+                "port": "443",
+                "network": "udp",
+                "outboundTag": "block"
+            },
+            {
+                "type": "field",
+                "ip": [
+                    "geoip:cn"
+                ],
+                "outboundTag": "block"
+            }
+        ]
+    },
+    "inbounds": [
+        {
+            "listen": "0.0.0.0",
+            "port": 443,
+            "protocol": "vless",
+            "settings": {
+                "clients": [
+                    {
+                        "id": "chika",
+                        "flow": "user-flow"
+                    }
+                ],
+                "decryption": "none"
+            },
+            "streamSettings": {
+                "network": "networkmode",
+                "security": "reality",
+                "realitySettings": {
+                    "show": false,
+                    "dest": "www.lovelive-anime.jp:443",
+                    "xver": 0,
+                    "serverNames": [
+                        "www.lovelive-anime.jp",
+                        ""
+                    ],
+                    "privateKey": "2KZ4uouMKgI8nR-LDJNP1_MHisCJOmKGj9jUjZLncVU",
+                    "shortIds": [
+                        "6ba85179e30d4fc2"
+                    ]
+                } //grpcsetting
+            },
+            "sniffing": {
+                "enabled": true,
+                "destOverride": [
+                    "http",
+                    "tls",
+                    "quic"
+                ]
+            }
+        }
+    ],
+    "outbounds": [
+        {
+            "protocol": "freedom",
+            "tag": "direct"
+        },
+        {
+            "protocol": "blackhole",
+            "tag": "block"
+        }
+    ],
+    "policy": {
+        "levels": {
+            "0": {
+                "handshake": 2,
+                "connIdle": 120
+            }
+        }
+    }
+}
+EOF
 
 choose_network
 
