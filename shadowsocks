@@ -104,7 +104,8 @@ cat > config.json <<EOF
     "rules": [
       {
         "ip": [
-          "geoip:private"
+          "geoip:private",
+          "geoip:cn"
         ],
         "outboundTag": "blocked",
         "type": "field"
