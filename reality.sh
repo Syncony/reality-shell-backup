@@ -116,7 +116,8 @@ cat > config.json <<EOF
             {
                 "type": "field",
                 "ip": [
-                    "geoip:cn"
+                    "geoip:cn",
+          	    "geoip:private"
                 ],
                 "outboundTag": "block"
             }
