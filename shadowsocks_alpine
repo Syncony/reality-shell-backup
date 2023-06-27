@@ -151,7 +151,7 @@ chmod +x /etc/init.d/Xray
 
 # 添加到开机启动项中
 rc-update add Xray default
-
+[[ `echo ${ip}|grep ":"` != ""  ]]&& ip="[${ip}]"
 echo "安装完成！"
 echo -e "\nPort:"$port
 echo -e "\nMethod:"$method
