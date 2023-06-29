@@ -148,7 +148,7 @@ EOF
 
 # 添加执行权限
 chmod +x /etc/init.d/Xray
-
+[[ `echo ${ip}|grep ":"` != ""  ]]&& ip="[${ip}]"
 # 添加到开机启动项中
 rc-update add Xray default
 [[ `echo ${ip}|grep ":"` != ""  ]]&& ip="[${ip}]"
