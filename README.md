@@ -12,3 +12,5 @@ bash <(curl -sL https://raw.githubusercontent.com/WangHelloo/reality-shell-backu
 
 [Xray-core](https://github.com/XTLS/Xray-core)
 [Xray-examples](https://github.com/chika0801/Xray-examples)
+[Sing-Box](https://github.com/SagerNet/sing-box)
+[Sing-Box-Yes](https://github.com/FranzKafkaYu/sing-box-yes/tree/main)
