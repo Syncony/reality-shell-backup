@@ -357,7 +357,7 @@ EOF
       chmod 644 ${SERVICE_FILE_PATH}
       rc-update add sing-box
       service sing-box start
-    elif
+    else
       cat >${SERVICE_FILE_PATH} <<EOF
 [Unit]
 Description=sing-box Service
