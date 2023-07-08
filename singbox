@@ -1,0 +1,391 @@
+#! /bin/bash
+
+SING_BOX_PATH="/etc/sing-box/"
+SHARE_LINK=""
+SERVICE_FILE_PATH='/etc/systemd/system/sing-box.service'
+IP=`curl ip.sb`
+[ -z `echo ${IP}|grep ":"`  ] || IP="["${IP}"]"
+
+#System check
+os_check() {
+    echo -e "\n检测当前系统中...\n"
+    if [[ -f /etc/redhat-release ]]; then
+        OS_RELEASE="centos"
+    elif cat /etc/issue | grep -Eqi "debian"; then
+        OS_RELEASE="debian"
+    elif cat /etc/issue | grep -Eqi "Alpine"; then
+        OS_RELEASE="alpine"
+    elif cat /etc/issue | grep -Eqi "ubuntu"; then
+        OS_RELEASE="ubuntu"
+    elif cat /etc/issue | grep -Eqi "centos|red hat|redhat"; then
+        OS_RELEASE="centos"
+    elif cat /proc/version | grep -Eqi "debian"; then
+        OS_RELEASE="debian"
+    elif cat /proc/version | grep -Eqi "ubuntu"; then
+        OS_RELEASE="ubuntu"
+    elif cat /proc/version | grep -Eqi "centos|red hat|redhat"; then
+        OS_RELEASE="centos"
+    else
+        echo -e "\n系统检测错误,请联系脚本作者!" && exit 1
+    fi
+    echo -e "\n系统检测完毕,当前系统为:${OS_RELEASE}\n"
+}
+
+#arch check
+arch_check() {
+    echo -e "\n检测当前系统架构中...\n"
+    OS_ARCH=$(arch)
+    echo -e "\n当前系统架构为 ${OS_ARCH}\n"
+
+    if [[ ${OS_ARCH} == "x86_64" || ${OS_ARCH} == "x64" || ${OS_ARCH} == "amd64" ]]; then
+        OS_ARCH="amd64"
+    elif [[ ${OS_ARCH} == "aarch64" || ${OS_ARCH} == "arm64" ]]; then
+        OS_ARCH="arm64"
+    else
+        OS_ARCH="amd64"
+        echo -e "\n检测系统架构失败，使用默认架构: ${OS_ARCH}\n"
+    fi
+    echo -e "\n系统架构检测完毕,当前系统架构为:${OS_ARCH}\n"
+}
+
+#install some common utils
+install_base() {
+    if [[ ${OS_RELEASE} == "ubuntu" || ${OS_RELEASE} == "debian" ]]; then
+        apt install wget tar jq -y
+    elif [[ ${OS_RELEASE} == "centos" ]]; then
+        yum install wget tar jq -y
+    elif [[ ${OS_RELEASE} == "alpine" ]]; then
+        apk update && apk add wget tar jq -y
+    fi
+}
+
+#download sing-box  binary
+download_sing_box() {
+    echo -e "\n开始下载sing-box...\n"
+    os_check && arch_check && install_base
+    local SING_BOX_VERSION_TEMP=$(curl -Ls "https://api.github.com/repos/SagerNet/sing-box/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
+    SING_BOX_VERSION=${SING_BOX_VERSION_TEMP:1}
+    echo -e "\n将选择使用版本:${SING_BOX_VERSION}\n"
+    local DOWANLOAD_URL="https://github.com/SagerNet/sing-box/releases/download/${SING_BOX_VERSION_TEMP}/sing-box-${SING_BOX_VERSION}-linux-${OS_ARCH}.tar.gz"
+
+    #here we need create directory for sing-box
+    [[ -d ${SING_BOX_PATH} ]] && rm ${SING_BOX_PATH}/* -R || mkdir ${SING_BOX_PATH}
+    cd ${SING_BOX_PATH}
+    wget -N --no-check-certificate -O sb.tar.gz ${DOWANLOAD_URL}
+    tar -xvf sb.tar.gz
+    rm sb.tar.gz && mv sing-box-${SING_BOX_VERSION}-linux-${OS_ARCH}/* .
+    rm sing-box-${SING_BOX_VERSION}-linux-${OS_ARCH} -R
+    if [[ $? -ne 0 ]]; then
+        echo -e "\nDownload sing-box failed,plz be sure that your network work properly and can access github"
+        exit 1
+    else
+        echo -e "\n下载sing-box成功"
+    fi
+}
+
+#download_sing_box
+
+reality_inbound() {
+    network_mode=""
+    function choose_network(){
+    echo -e "\n❗gRPC/H2 建议在有大陆优化的VPS上使用。并且VPS所在的地区距离你的位置越近越好。即使你的VPS满足以上条件，仍然不能避免断流现象。\n"
+    read -e -p "1.TCP 2.H2 3.GRPC 请键入相应数字选择传输协议:" networkmode
+    case ${networkmode} in
+        1)
+          network_mode="tcp"
+          echo "TCP";;
+        2)
+          network_mode="http"
+          echo "H2";;
+        3)
+          network_mode="grpc"
+          echo "GRPC";;
+        *)
+          echo "选择错误"
+          sleep 3s
+          choose_network;;
+    esac
+    }
+    choose_network
+    cat >>config.json<<EOF
+        {
+            "type": "vless",
+            "tag": "vless-in",
+            "listen": "::",
+            "listen_port": PORT,
+            "users": [
+                {
+                    "uuid": "UUID",
+                    "flow": "USERFLOW"
+                }
+            ],
+            "tls": {
+                "enabled": true,
+                "server_name": "CUSDEST",
+                "reality": {
+                    "enabled": true,
+                    "handshake": {
+                        "server": "CUSDEST",
+                        "server_port": 443
+                    },
+                    "private_key": "PRIKEY",
+                    "short_id": [
+                        "SID",
+                        ""
+                    ]
+                }
+            }
+EOF
+
+read -p "输入监听端口(0~65535):" Port
+[ -z ${Port} ] && Port=443
+
+read -p "自定义UUID(不需要就直接回车):" UUID
+[ -z ${UUID} ] && UUID=`./sing-box generate uuid`
+
+read -p "自定义ShortID(不需要就直接回车):" SID
+[ -z ${SID} ] && SID=`openssl rand -hex 8`
+
+read -p "自定义SNI(不需要就直接回车):" SNI
+[ -z ${SNI} ] && SNI="www.lovelive-anime.jp"
+
+read -p "自定义私钥(不需要就直接回车):" PIK
+if [[ -z ${PIK} ]];then
+    KEYS=`./sing-box generate reality-keypair`
+    PIK=$(echo -e $KEYS | awk -F ' ' '{print $2}')
+    PBK=$(echo -e $KEYS | awk -F ' ' '{print $4}')
+    echo "私钥:"${PIK}
+    echo "公钥:"${PBK}
+fi
+
+sed -i 's/PORT/'${Port}'/g' ./config.json
+sed -i 's/UUID/'${UUID}'/g' ./config.json
+sed -i 's/SID/'${SID}'/g' ./config.json
+sed -i 's/CUSDEST/'${SNI}'/g' ./config.json
+sed -i 's/PRIKEY/'${PIK}'/g' ./config.json
+local USERFLOW=""
+[ "${network_mode}" == "tcp" ] && USERFLOW="xtls-rprx-vision"
+sed -i 's/USERFLOW/'${USERFLOW}'/g' ./config.json
+if [[ "${network_mode}" != "tcp" ]];then
+        cat >>config.json<<EOF
+,
+            "transport": {
+                "type": "${network_mode}"
+EOF
+        if [[ "${network_mode}" == "grpc" ]];then
+          cat >>config.json<<EOF
+,
+                "service_name": "grpc"
+EOF
+        fi
+fi
+cat >>config.json<<EOF
+
+            }
+        }
+EOF
+SHARE_LINK=Share="vless://"${UUID}"@"${IP}":"${Port}"?security=reality&encryption=none&pbk="${PBK}"&headerType=none&fp=chrome&spx=%2F&type="${network_mode}"&sni="${SNI}"&sid="${SID}"#Reality"
+}
+
+ss_inbound() {
+    read -p "输入监听端口(0~65535):" Port
+    [ -z ${Port} ] && Port=443
+    read -p "输入密码:" Passwd
+    [ -z ${Passwd} ] && Passwd=`openssl rand -base64 32`
+    local method=$([[ ! -z `lscpu|grep aes` ]]&& echo "2022-blake3-aes-256-gcm" || echo "2022-blake3-chacha20-poly1305")
+    cat >>config.json<<EOF
+        {
+            "type": "shadowsocks",
+            "tag": "ss-in",
+            "listen": "0.0.0.0",
+            "listen_port": ${Port},
+            "method": "${method}",
+            "password": "${Passwd}",
+            "network": "tcp",
+            "domain_strategy": "prefer_ipv4",
+            "tcp_fast_open": true,
+            "sniff": true,
+            "proxy_protocol": false
+        }
+EOF
+    local ss_encode=`curl -sL https://www.toolhelper.cn/EncodeDecode/Base64Encode -d "encode=$method:$Passwd" -d "encoding=UTF-8"|jq .Data -r`
+    SHARE_LINK="ss://${ss_encode}@${IP}:${Port}#SS"
+}
+
+make_config() {
+    cd ${SING_BOX_PATH}
+    if [[ -f config.json ]];then
+      cp config.json config.json.bak
+      echo -e "\n已备份原配置文件为config.json.bak"
+      echo "" > config.json
+    fi
+    echo "">sing-box.log
+    cat >> config.json <<EOF
+{
+    "log": {
+        "disabled": true,
+        "level": "info",
+        "output": "${SING_BOX_PATH}sing-box.log",
+        "timestamp": true
+    },
+    "dns": {
+        "servers": [
+            {
+                "tag": "google-tls",
+                "address": "local",
+                "address_strategy": "prefer_ipv4",
+                "strategy": "ipv4_only",
+                "detour": "direct"
+            },
+            {
+                "tag": "google-udp",
+                "address": "8.8.8.8",
+                "address_strategy": "prefer_ipv4",
+                "strategy": "prefer_ipv4",
+                "detour": "direct"
+            }
+        ],
+        "strategy": "prefer_ipv4",
+        "disable_cache": false,
+        "disable_expire": false
+    },
+    "inbounds": [
+EOF
+      read -p "搭建Vless-Reality?[y/N](默认搭建Shadowsocks2022节点)" is_reality
+      [[ "${is_reality}" == "y" || "${is_reality}" == "Y" ]] && reality_inbound || ss_inbound
+      cat >> config.json <<EOF
+    ],
+    "outbounds": [
+        {
+            "type": "direct",
+            "tag": "direct"
+        },
+        {
+            "type": "block",
+            "tag": "block"
+        },
+        {
+            "type": "dns",
+            "tag": "dns-out"
+        }
+    ],
+    "route": {
+        "rules": [
+            {
+                "protocol": "dns",
+                "outbound": "dns-out"
+            },
+            {
+                "inbound": [
+                    "ss-in"
+                ],
+                "network": "tcp",
+                "outbound": "direct"
+            },
+            {
+                "geosite": "category-ads-all",
+                "outbound": "block"
+            },
+            {
+                "geosite": "cn",
+                "geoip": "cn",
+                "outbound": "block"
+            }
+        ],
+        "geoip": {
+            "path": "${SING_BOX_PATH}geoip.db",
+            "download_url": "https://github.com/SagerNet/sing-geoip/releases/latest/download/geoip.db",
+            "download_detour": "direct"
+        },
+        "geosite": {
+            "path": "${SING_BOX_PATH}geosite.db",
+            "download_url": "https://github.com/SagerNet/sing-geosite/releases/latest/download/geosite.db",
+            "download_detour": "direct"
+        },
+        "final": "direct",
+        "auto_detect_interface": true
+    }
+}
+EOF
+}
+
+#make_config
+
+#install systemd service
+install_systemd_service() {
+    echo -e "开始安装sing-box systemd服务..."
+    [ ${OS_RELEASE} == "alpine" ] && SERVICE_FILE_PATH="/etc/init.d/sing-box"
+    if [ -f "${SERVICE_FILE_PATH}" ]; then
+        rm -rf ${SERVICE_FILE_PATH}
+    fi
+    #create service file
+    touch ${SERVICE_FILE_PATH}
+    if [ $? -ne 0 ]; then
+        echo -e "create service file failed,exit"
+        exit 1
+    else
+        echo -e "create service file success..."
+    fi
+    if [[ ${OS_RELEASE} == "alpine" ]];then
+            cat >${SERVICE_FILE_PATH} <<EOF
+#!/sbin/openrc-run
+
+depend() {
+    need net
+}
+
+start() {
+    ebegin "Starting sing-box"
+    start-stop-daemon --start --exec ${SING_BOX_PATH}sing-box run -c ${SING_BOX_PATH}config.json > /dev/null 2>&1
+    eend 0
+}
+
+stop() {
+    ebegin "Stopping sing-box"
+    start-stop-daemon --stop --exec ${SING_BOX_PATH}sing-box
+    eend 0
+}
+
+restart() {
+    ebegin "Restarting sing-box"
+    start-stop-daemon --stop --exec ${SING_BOX_PATH}sing-box
+    sleep 1
+    start-stop-daemon --start --exec ${SING_BOX_PATH}sing-box run -c ${SING_BOX_PATH}config.json > /dev/null 2>&1
+    eend 0
+}
+EOF
+      chmod 644 ${SERVICE_FILE_PATH}
+      rc-update add sing-box
+      service sing-box start
+    elif
+      cat >${SERVICE_FILE_PATH} <<EOF
+[Unit]
+Description=sing-box Service
+Documentation=https://sing-box.sagernet.org/
+After=network.target nss-lookup.target
+Wants=network.target
+[Service]
+Type=simple
+ExecStart=${SING_BOX_PATH}sing-box run -c ${SING_BOX_PATH}config.json
+Restart=on-failure
+RestartSec=30s
+RestartPreventExitStatus=23
+LimitNPROC=10000
+LimitNOFILE=1000000
+[Install]
+WantedBy=multi-user.target
+EOF
+    fi
+    chmod 644 ${SERVICE_FILE_PATH}
+    systemctl enable sing-box 
+    service sing-box start
+    systemctl daemon-reload
+    echo -e "安装sing-box systemd服务成功"
+}
+
+install_systemd_service
+
+echo -e "
+sing-box可执行文件与目录均位于:${SING_BOX_PATH}
+如需卸载只需要执行 service disable sing-box --now && rm ${SING_BOX_PATH} -R
+分享链接:${SHARE_LINK}"
