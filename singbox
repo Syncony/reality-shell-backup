@@ -203,7 +203,6 @@ ss_inbound() {
             "password": "${Passwd}",
             "network": "tcp",
             "domain_strategy": "prefer_ipv4",
-            "tcp_fast_open": true,
             "sniff": true,
             "proxy_protocol": false
         }
