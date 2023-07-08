@@ -55,7 +55,7 @@ install_base() {
     elif [[ ${OS_RELEASE} == "centos" ]]; then
         yum install wget tar jq -y
     elif [[ ${OS_RELEASE} == "alpine" ]]; then
-        apk update && apk add wget tar jq -y
+        apk update && apk add wget tar jq openssl
     fi
 }
 
@@ -83,7 +83,7 @@ download_sing_box() {
     fi
 }
 
-#download_sing_box
+download_sing_box
 
 reality_inbound() {
     network_mode=""
@@ -192,7 +192,7 @@ ss_inbound() {
     [ -z ${Port} ] && Port=443
     read -p "输入密码:" Passwd
     [ -z ${Passwd} ] && Passwd=`openssl rand -base64 32`
-    local method=$([[ ! -z `lscpu|grep aes` ]]&& echo "2022-blake3-aes-256-gcm" || echo "2022-blake3-chacha20-poly1305")
+    local method=$([[ ! -z `cat /proc/cpuinfo|grep aes` ]]&& echo "2022-blake3-aes-256-gcm" || echo "2022-blake3-chacha20-poly1305")
     cat >>config.json<<EOF
         {
             "type": "shadowsocks",
@@ -227,27 +227,6 @@ make_config() {
         "level": "info",
         "output": "${SING_BOX_PATH}sing-box.log",
         "timestamp": true
-    },
-    "dns": {
-        "servers": [
-            {
-                "tag": "google-tls",
-                "address": "local",
-                "address_strategy": "prefer_ipv4",
-                "strategy": "ipv4_only",
-                "detour": "direct"
-            },
-            {
-                "tag": "google-udp",
-                "address": "8.8.8.8",
-                "address_strategy": "prefer_ipv4",
-                "strategy": "prefer_ipv4",
-                "detour": "direct"
-            }
-        ],
-        "strategy": "prefer_ipv4",
-        "disable_cache": false,
-        "disable_expire": false
     },
     "inbounds": [
 EOF
@@ -309,7 +288,7 @@ EOF
 EOF
 }
 
-#make_config
+make_config
 
 #install systemd service
 install_systemd_service() {
@@ -330,31 +309,19 @@ install_systemd_service() {
             cat >${SERVICE_FILE_PATH} <<EOF
 #!/sbin/openrc-run
 
+name="sing-box"
+description="Sing-Box Service"
+supervisor="supervise-daemon"
+command="${SING_BOX_PATH}sing-box run"
+command_args="-c ${SING_BOX_PATH}config.json"
+command_user="root:root"
+
 depend() {
-    need net
-}
-
-start() {
-    ebegin "Starting sing-box"
-    start-stop-daemon --start --exec ${SING_BOX_PATH}sing-box run -c ${SING_BOX_PATH}config.json > /dev/null 2>&1
-    eend 0
-}
-
-stop() {
-    ebegin "Stopping sing-box"
-    start-stop-daemon --stop --exec ${SING_BOX_PATH}sing-box
-    eend 0
-}
-
-restart() {
-    ebegin "Restarting sing-box"
-    start-stop-daemon --stop --exec ${SING_BOX_PATH}sing-box
-    sleep 1
-    start-stop-daemon --start --exec ${SING_BOX_PATH}sing-box run -c ${SING_BOX_PATH}config.json > /dev/null 2>&1
-    eend 0
+	after net dns
+	use net
 }
 EOF
-      chmod 644 ${SERVICE_FILE_PATH}
+      chmod +x ${SERVICE_FILE_PATH}
       rc-update add sing-box
       service sing-box start
     else
@@ -375,11 +342,11 @@ LimitNOFILE=1000000
 [Install]
 WantedBy=multi-user.target
 EOF
-    fi
-    chmod 644 ${SERVICE_FILE_PATH}
-    systemctl enable sing-box 
-    service sing-box start
+    chmod +x ${SERVICE_FILE_PATH}
     systemctl daemon-reload
+    systemctl enable sing-box 
+    fi
+    service sing-box start
     echo -e "安装sing-box systemd服务成功"
 }
 
@@ -387,5 +354,5 @@ install_systemd_service
 
 echo -e "
 sing-box可执行文件与目录均位于:${SING_BOX_PATH}
-如需卸载只需要执行 service disable sing-box --now && rm ${SING_BOX_PATH} -R
+如需卸载只需要执行删除sing-box服务和 ${SING_BOX_PATH} 文件夹
 分享链接:${SHARE_LINK}"
