@@ -175,7 +175,7 @@ EOF
         if [[ "${network_mode}" == "grpc" ]];then
           cat >>config.json<<EOF
 ,
-                "service_name": "grpc"
+                "service_name": ""
 EOF
         fi
 fi
