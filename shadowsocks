@@ -193,7 +193,7 @@ sed -i "s/\+/%2B/g" str
 passwd=`cat str`
 rm str
 ip=`curl -s ip.sb`
-encode=`curl -sL https://www.toolhelper.cn/EncodeDecode/Base64Encode -d "encode=$method:$passwd" -d "encoding=UTF-8"|jq .Data -r`
+encode=`echo -n $method:$passwd | base64  | tr -d '\n' ; echo "="`
 [[ `echo ${ip}|grep ":"` != ""  ]]&& ip="[${ip}]"
 echo -e "\nPort:"$port
 echo -e "\nMethod:"$method
