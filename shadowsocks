@@ -193,7 +193,7 @@ sed -i "s/\+/%2B/g" str
 passwd=`cat str`
 rm str
 ip=`curl -s ip.sb`
-encode=`echo -n $method:$passwd | base64  | tr -d '\n' ; echo "="`
+encode=`echo -n $method:$passwd | base64  | tr -d '\n'`
 [[ `echo ${ip}|grep ":"` != ""  ]]&& ip="[${ip}]"
 echo -e "\nPort:"$port
 echo -e "\nMethod:"$method
