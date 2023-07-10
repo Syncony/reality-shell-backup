@@ -113,7 +113,7 @@ sed -i "s/\+/%2B/g" str
 passwd=`cat str`
 rm str
 ip=`curl -s ip.sb`
-encode=`echo -n $method:$passwd | base64 | tr -d '\n' ; echo "="`
+encode=`echo -n $method:$passwd | base64 | tr -d '\n'`
 
 chmod +x /etc/Xray/xray
 
