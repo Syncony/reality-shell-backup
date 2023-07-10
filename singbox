@@ -207,7 +207,7 @@ ss_inbound() {
             "proxy_protocol": false
         }
 EOF
-    local ss_encode=`curl -sL https://www.toolhelper.cn/EncodeDecode/Base64Encode -d "encode=$method:$Passwd" -d "encoding=UTF-8"|jq .Data -r`
+    local ss_encode=`echo -n $method:$Passwd|base64`
     SHARE_LINK="ss://${ss_encode}@${IP}:${Port}#SS"
 }
 
