@@ -207,7 +207,7 @@ ss_inbound() {
             "proxy_protocol": false
         }
 EOF
-    local ss_encode=`echo -n $method:$Passwd|base64`
+    local ss_encode=`echo -n $method:$Passwd|base64 | tr -d '\n' ; echo "="`
     SHARE_LINK="ss://${ss_encode}@${IP}:${Port}#SS"
 }
 
