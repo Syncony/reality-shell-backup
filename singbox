@@ -254,13 +254,6 @@ EOF
                 "outbound": "dns-out"
             },
             {
-                "inbound": [
-                    "ss-in"
-                ],
-                "network": "tcp",
-                "outbound": "direct"
-            },
-            {
                 "geosite": "category-ads-all",
                 "outbound": "block"
             },
@@ -268,6 +261,13 @@ EOF
                 "geosite": "cn",
                 "geoip": "cn",
                 "outbound": "block"
+            },
+            {
+                "inbound": [
+                    "ss-in"
+                ],
+                "network": "tcp",
+                "outbound": "direct"
             }
         ],
         "geoip": {
