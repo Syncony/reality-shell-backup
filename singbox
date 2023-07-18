@@ -197,7 +197,7 @@ ss_inbound() {
         {
             "type": "shadowsocks",
             "tag": "ss-in",
-            "listen": "0.0.0.0",
+            "listen": "::",
             "listen_port": ${Port},
             "method": "${method}",
             "password": "${Passwd}",
