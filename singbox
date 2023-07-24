@@ -202,7 +202,6 @@ ss_inbound() {
             "listen_port": ${Port},
             "method": "${method}",
             "password": "${Passwd}",
-            "network": "tcp",
             "domain_strategy": "prefer_ipv4",
             "sniff": true,
             "proxy_protocol": false
