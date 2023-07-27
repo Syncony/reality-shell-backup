@@ -114,6 +114,8 @@ reality_inbound() {
             "tag": "vless-in",
             "listen": "::",
             "listen_port": PORT,
+            "sniff": true,
+            "sniff_override_destination": true,
             "users": [
                 {
                     "uuid": "UUID",
@@ -193,7 +195,7 @@ ss_inbound() {
     [ -z ${Port} ] && Port=443
     read -p "输入密码(直接回车随机生成):" Passwd
     [ -z ${Passwd} ] && Passwd=`openssl rand -base64 32`
-    local method=$([[ ! -z `cat /proc/cpuinfo|grep aes` ]]&& echo "2022-blake3-aes-256-gcm" || echo "2022-blake3-chacha20-poly1305")
+    local method=$([[ ! -z `cat /proc/cpuinfo|grep aes` ]]&& echo "aes-256-gcm" || echo "chacha20-poly1305")
     cat >>config.json<<EOF
         {
             "type": "shadowsocks",
@@ -202,9 +204,8 @@ ss_inbound() {
             "listen_port": ${Port},
             "method": "${method}",
             "password": "${Passwd}",
-            "domain_strategy": "prefer_ipv4",
             "sniff": true,
-            "proxy_protocol": false
+            "sniff_override_destination": true
         }
 EOF
     local ss_encode=`echo -n $method:$Passwd|base64 | tr -d '\n'`
@@ -229,7 +230,7 @@ make_config() {
     },
     "inbounds": [
 EOF
-      read -p "搭建Vless-Reality?[y/N](默认搭建Shadowsocks2022节点)" is_reality
+      read -p "搭建Vless-Reality?[y/N](默认采用Shadowsocks)" is_reality
       [[ "${is_reality}" == "y" || "${is_reality}" == "Y" ]] && reality_inbound || ss_inbound
       cat >> config.json <<EOF
     ],
