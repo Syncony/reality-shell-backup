@@ -187,7 +187,7 @@ cat >>config.json<<EOF
             }
         }
 EOF
-SHARE_LINK=Share="vless://"${UUID}"@"${IP}":"${Port}"?security=reality&encryption=none&pbk="${PBK}"&headerType=none&fp=chrome&spx=%2F&type="${network_mode}"&sni="${SNI}"&sid="${SID}"#Reality"
+SHARE_LINK="vless://"${UUID}"@"${IP}":"${Port}"?security=reality&encryption=none&pbk="${PBK}"&headerType=none&fp=chrome&spx=%2F&type="${network_mode}"&sni="${SNI}"&sid="${SID}"#Reality"
 }
 
 ss_inbound() {
