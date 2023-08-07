@@ -251,24 +251,9 @@ EOF
     "route": {
         "rules": [
             {
-                "protocol": "dns",
-                "outbound": "dns-out"
-            },
-            {
-                "geosite": "category-ads-all",
-                "outbound": "block"
-            },
-            {
                 "geosite": "cn",
                 "geoip": "cn",
                 "outbound": "block"
-            },
-            {
-                "inbound": [
-                    "ss-in"
-                ],
-                "network": "tcp",
-                "outbound": "direct"
             }
         ],
         "geoip": {
