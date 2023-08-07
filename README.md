@@ -3,6 +3,11 @@
 
 本人代码能力有限,欢迎大佬们补充纠正
 
+强烈推荐 sing-box 一把梭 直连就reality 中转就ss
+```
+bash <(curl -sL 'https://raw.githubusercontent.com/WangHelloo/reality-shell-backup/main/singbox')
+```
+
 主要依赖:
 
 [Xray-core](https://github.com/XTLS/Xray-core)
