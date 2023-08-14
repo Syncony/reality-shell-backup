@@ -187,7 +187,7 @@ cat >>config.json<<EOF
             }
         }
 EOF
-SHARE_LINK="vless://"${UUID}"@"${IP}":"${Port}"?security=reality&encryption=none&pbk="${PBK}"&headerType=none&fp=chrome&spx=%2F&type="${network_mode}"&sni="${SNI}"&sid="${SID}"#Reality"
+SHARE_LINK=${SHARE_LINK}"\nReality: vless://"${UUID}"@"${IP}":"${Port}"?security=reality&encryption=none&pbk="${PBK}"&headerType=none&fp=chrome&spx=%2F&type="${network_mode}"&sni="${SNI}"&sid="${SID}"#Reality"
 }
 
 ss_inbound() {
@@ -209,7 +209,7 @@ ss_inbound() {
         }
 EOF
     local ss_encode=`echo -n $method:$Passwd|base64 | tr -d '\n'`
-    SHARE_LINK="ss://${ss_encode}@${IP}:${Port}#SS"
+    SHARE_LINK=${SHARE_LINK}"\nShadowsocks: ss://${ss_encode}@${IP}:${Port}#SS"
 }
 
 make_config() {
@@ -233,8 +233,10 @@ EOF
       read -p "搭建Vless-Reality?[y/N/a](默认采用Shadowsocks,键入a同时搭建)" is_reality
       case ${is_reality} in
           a|A)
+              echo -e "配置Shadowsocks:\n"
               ss_inbound;
 	      echo "," >> config.json
+              echo -e "配置vless-reality:\n"
               reality_inbound
 	      ;;
           y|Y)
