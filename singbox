@@ -230,8 +230,20 @@ make_config() {
     },
     "inbounds": [
 EOF
-      read -p "搭建Vless-Reality?[y/N](默认采用Shadowsocks)" is_reality
-      [[ "${is_reality}" == "y" || "${is_reality}" == "Y" ]] && reality_inbound || ss_inbound
+      read -p "搭建Vless-Reality?[y/N/a](默认采用Shadowsocks,键入a同时搭建)" is_reality
+      case ${is_reality} in
+          a|A)
+              ss_inbound;
+	      echo "," >> config.json
+              reality_inbound
+	      ;;
+          y|Y)
+              reality_inbound
+              ;;
+          *)
+              ss_inbound
+              ;;
+      esac
       cat >> config.json <<EOF
     ],
     "outbounds": [
