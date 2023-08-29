@@ -64,12 +64,13 @@ download_sing_box() {
     echo -e "\n开始下载sing-box...\n"
     os_check && arch_check && install_base
     local SING_BOX_VERSION_TEMP=$(curl -Ls "https://api.github.com/repos/SagerNet/sing-box/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
-    [ -z "${SING_BOX_VERSION_TEMP}" ] && SING_BOX_VERSION_TEMP="v1.3.5"
+    [ -z "${SING_BOX_VERSION_TEMP}" ] && SING_BOX_VERSION_TEMP="v1.4.0"
     SING_BOX_VERSION=${SING_BOX_VERSION_TEMP:1}
     echo -e "\n将选择使用版本:${SING_BOX_VERSION}\n"
     local DOWANLOAD_URL="https://github.com/SagerNet/sing-box/releases/download/${SING_BOX_VERSION_TEMP}/sing-box-${SING_BOX_VERSION}-linux-${OS_ARCH}.tar.gz"
 
     #here we need create directory for sing-box
+    [[ -f ${SING_BOX_PATH}/config.json ]] && mv ${SING_BOX_PATH}/config.json /etc/sb.bak.config.json
     [[ -d ${SING_BOX_PATH} ]] && rm ${SING_BOX_PATH}/* -R || mkdir ${SING_BOX_PATH}
     cd ${SING_BOX_PATH}
     wget -N --no-check-certificate -O sb.tar.gz ${DOWANLOAD_URL}
@@ -82,6 +83,7 @@ download_sing_box() {
     else
         echo -e "\n下载sing-box成功"
     fi
+    [[ -f /etc/sb.bak.config.json ]] && mv /etc/sb.bak.config.json ${SING_BOX_PATH}/config.json
 }
 
 download_sing_box
