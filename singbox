@@ -83,10 +83,16 @@ download_sing_box() {
     else
         echo -e "\n下载sing-box成功"
     fi
-    [[ -f /etc/sb.bak.config.json ]] && mv /etc/sb.bak.config.json ${SING_BOX_PATH}/config.json
+    [[ -f /etc/sb.bak.config.json ]] && cp /etc/sb.bak.config.json ${SING_BOX_PATH}/config.json
 }
 
 download_sing_box
+
+if [[ -f /etc/sb.bak.config.json ]];then
+	rm /etc/sb.bak.config.json
+	echo "升级完成"
+	exit
+fi
 
 reality_inbound() {
     network_mode=""
