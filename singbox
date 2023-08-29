@@ -222,11 +222,7 @@ EOF
 
 make_config() {
     cd ${SING_BOX_PATH}
-    if [[ -f config.json ]];then
-      cp config.json config.json.bak
-      echo -e "\n已备份原配置文件为config.json.bak"
-      echo "" > config.json
-    fi
+    echo "" > config.json
     echo "">sing-box.log
     cat >> config.json <<EOF
 {
