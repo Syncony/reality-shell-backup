@@ -194,8 +194,12 @@ fi
 cat >>config.json<<EOF
 
             }
+EOF
+if [[ "${network_mode}" != "tcp" ]];then
+cat >>config.json<<EOF
         }
 EOF
+fi
 SHARE_LINK=${SHARE_LINK}"\nReality: vless://"${UUID}"@"${IP}":"${Port}"?security=reality&encryption=none&pbk="${PBK}"&headerType=none&fp=chrome&spx=%2F&type="${network_mode}"&sni="${SNI}"&sid="${SID}"#Reality"
 }
 
