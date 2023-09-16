@@ -233,7 +233,7 @@ make_config() {
 {
     "log": {
         "disabled": true,
-        "level": "info",
+        "level": "error",
         "output": "${SING_BOX_PATH}sing-box.log",
         "timestamp": true
     },
