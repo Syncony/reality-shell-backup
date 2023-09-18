@@ -364,7 +364,7 @@ EOF
 
 install_systemd_service
 
-echo '${SHARE_LINK}' > ${SING_BOX_PATH}/share.txt
+echo "${SHARE_LINK}" > ${SING_BOX_PATH}/share.txt
 
 echo -e "
 sing-box可执行文件与目录均位于:${SING_BOX_PATH}
