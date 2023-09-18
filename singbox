@@ -261,10 +261,27 @@ EOF
         {
             "type": "direct",
             "tag": "direct"
-        }
+        },
+	{
+	    "type": "block",
+	    "tag": "block"
+	}
     ],
     "route": {
         "rules": [
+	    {
+		"domain_suffix": "googleapis.cn",
+		"outbound": "direct"
+	    },
+            {
+                "geosite": "cn",
+                "geoip": "cn",
+                "outbound": "block"
+            },
+            {
+                "geosite": "category-ads-all",
+                "outbound": "block"
+            }
         ],
         "geoip": {
             "path": "${SING_BOX_PATH}geoip.db",
@@ -346,6 +363,8 @@ EOF
 }
 
 install_systemd_service
+
+echo '${SHARE_LINK}' > ${SING_BOX_PATH}/share.txt
 
 echo -e "
 sing-box可执行文件与目录均位于:${SING_BOX_PATH}
