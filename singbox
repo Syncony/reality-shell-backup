@@ -208,7 +208,7 @@ ss_inbound() {
     [ -z ${Port} ] && Port=443
     read -p "输入密码(直接回车随机生成):" Passwd
     [ -z ${Passwd} ] && Passwd=`openssl rand -base64 32`
-    local method=$([[ ! -z `cat /proc/cpuinfo|grep aes` ]]&& echo "aes-256-gcm" || echo "chacha20-ietf-poly1305")
+    local method=$([[ ! -z `cat /proc/cpuinfo|grep aes` ]]&& echo "aes-128-gcm" || echo "chacha20-ietf-poly1305")
     cat >>config.json<<EOF
         {
             "type": "shadowsocks",
