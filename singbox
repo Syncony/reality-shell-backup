@@ -214,9 +214,7 @@ ss_inbound() {
             "listen": "::",
             "listen_port": ${Port},
             "method": "${method}",
-            "password": "${Passwd}",
-            "sniff": true,
-            "sniff_override_destination": true
+            "password": "${Passwd}"
         }
 EOF
     local ss_encode=`echo -n $method:$Passwd|base64 | tr -d '\n'`
