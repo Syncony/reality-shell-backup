@@ -273,10 +273,6 @@ EOF
                 "geosite": "cn",
                 "geoip": "cn",
                 "outbound": "block"
-            },
-            {
-                "geosite": "category-ads-all",
-                "outbound": "block"
             }
         ],
         "geoip": {
