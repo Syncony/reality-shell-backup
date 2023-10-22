@@ -233,26 +233,6 @@ make_config() {
         "output": "${SING_BOX_PATH}sing-box.log",
         "timestamp": true
     },
-    "dns": {
-      "servers": [      
-        {
-          "tag": "dot",
-          "address": "tls://1.1.1.1"
-        },
-        {
-          "tag": "block",
-          "address": "rcode://success"
-        }
-      ],
-      "rules": [
-        {
-          "geosite": "category-ads-all",
-          "server": "block",
-          "disable_cache": true
-        }
-      ],
-      "strategy": "prefer_ipv4"
-    },
     "inbounds": [
 EOF
       read -p "搭建Vless-Reality?[y/N/a](默认采用Shadowsocks,键入a同时搭建)" is_reality
