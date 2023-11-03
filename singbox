@@ -262,7 +262,23 @@ EOF
 	    "type": "block",
 	    "tag": "block"
 	}
-    ]
+    ],
+    "route": {
+        "rules":[
+        ],
+        "geoip": {
+            "path": "/etc/sing-box/geoip.db",
+            "download_url": "https://github.com/SagerNet/sing-geoip/releases/latest/download/geoip.db",
+            "download_detour": "direct"
+        },
+        "geosite": {
+            "path": "/etc/sing-box/geosite.db",
+            "download_url": "https://github.com/SagerNet/sing-geosite/releases/latest/download/geosite.db",
+            "download_detour": "direct"
+        },
+        "final": "direct",
+        "auto_detect_interface": true
+    }
 }
 EOF
 }
