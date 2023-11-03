@@ -262,32 +262,7 @@ EOF
 	    "type": "block",
 	    "tag": "block"
 	}
-    ],
-    "route": {
-        "rules": [
-	    {
-		"domain_suffix": "googleapis.cn",
-		"outbound": "direct"
-	    },
-            {
-                "geosite": "cn",
-                "geoip": "cn",
-                "outbound": "block"
-            }
-        ],
-        "geoip": {
-            "path": "${SING_BOX_PATH}geoip.db",
-            "download_url": "https://github.com/SagerNet/sing-geoip/releases/latest/download/geoip.db",
-            "download_detour": "direct"
-        },
-        "geosite": {
-            "path": "${SING_BOX_PATH}geosite.db",
-            "download_url": "https://github.com/SagerNet/sing-geosite/releases/latest/download/geosite.db",
-            "download_detour": "direct"
-        },
-        "final": "direct",
-        "auto_detect_interface": true
-    }
+    ]
 }
 EOF
 }
