@@ -78,7 +78,7 @@ download_sing_box() {
     wget -N --no-check-certificate -O sb.tar.gz ${DOWANLOAD_URL}
     tar -xvf sb.tar.gz
     rm sb.tar.gz && mv sing-box-${SING_BOX_VERSION}-linux-${OS_ARCH}/* .
-    rm sing-box-${SING_BOX_VERSION}-linux-${OS_ARCH} -R
+    rm sing-box-${SING_BOX_VERSION}-linux-${OS_ARCH} LICENSE -R
     if [[ $? -ne 0 ]]; then
         echo -e "\nDownload sing-box failed,plz be sure that your network work properly and can access github"
         exit 1
