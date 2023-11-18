@@ -73,7 +73,7 @@ download_sing_box() {
 
     #here we need create directory for sing-box
     [[ -f ${SING_BOX_PATH}/config.json ]] && mv ${SING_BOX_PATH}/config.json /etc/sb.bak.config.json
-    [[ -d ${SING_BOX_PATH} ]] && rm ${SING_BOX_PATH}/* -R || mkdir ${SING_BOX_PATH}
+    [[ -d ${SING_BOX_PATH} ]] && rm ${SING_BOX_PATH}/sing-box -f || mkdir ${SING_BOX_PATH}
     cd ${SING_BOX_PATH}
     wget -N --no-check-certificate -O sb.tar.gz ${DOWANLOAD_URL}
     tar -xvf sb.tar.gz
