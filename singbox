@@ -125,6 +125,10 @@ reality_inbound() {
             "tag": "vless-in",
             "listen": "::",
             "listen_port": PORT,
+	    "multiplex": {
+		"enabled": true,
+		"padding": true
+	    },
             "users": [
                 {
                     "uuid": "UUID",
@@ -215,6 +219,10 @@ ss_inbound() {
             "tag": "ss-in",
             "listen": "::",
             "listen_port": ${Port},
+	    "multiplex": {
+		"enabled": true,
+		"padding": true
+	    },
             "method": "${method}",
             "password": "${Passwd}"
         }
