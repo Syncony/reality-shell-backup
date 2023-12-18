@@ -238,10 +238,7 @@ make_config() {
     cat >> config.json <<EOF
 {
     "log": {
-        "disabled": true,
-        "level": "error",
-        "output": "${SING_BOX_PATH}sing-box.log",
-        "timestamp": true
+        "disabled": true
     },
     "inbounds": [
 EOF
