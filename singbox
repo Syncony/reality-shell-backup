@@ -64,8 +64,8 @@ download_sing_box() {
     echo -e "\n开始下载sing-box...\n"
     os_check && arch_check && install_base
     local SING_BOX_VERSION_TEMP=$(curl -Ls "https://api.github.com/repos/SagerNet/sing-box/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
-    [ -z "${SING_BOX_VERSION_TEMP}" ] && SING_BOX_VERSION_TEMP="v1.7.8"
-    read -p "自定义版本号(不需要就直接回车,推荐使用1.7.x):" custom_version
+    [ -z "${SING_BOX_VERSION_TEMP}" ] && SING_BOX_VERSION_TEMP="v1.8.0"
+    read -p "自定义版本号:" custom_version
     [ -z ${custom_version} ] || SING_BOX_VERSION_TEMP="v"$custom_version
     SING_BOX_VERSION=${SING_BOX_VERSION_TEMP:1}
     echo -e "\n将选择使用版本:${SING_BOX_VERSION}\n"
