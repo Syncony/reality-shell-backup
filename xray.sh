@@ -63,7 +63,7 @@ install_base() {
 download_xray() {
     echo -e "\n开始下载xray...\n"
     os_check && arch_check && install_base
-    local Xray_VERSION_TEMP=$(curl -Ls "https://api.github.com/repos/XTLS/Xray-core/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
+    local Xray_VERSION_TEMP=$(curl -s https://api.github.com/repos/XTLS/Xray-core/releases/latest | sed 'y/,/\n/' | grep 'tag_name' | awk -F '"' '{print $4}')
     [ -z "${Xray_VERSION_TEMP}" ] && Xray_VERSION_TEMP="v1.8.8"
     read -p "自定义版本号:" custom_version
     [ -z ${custom_version} ] || Xray_VERSION_TEMP="v"$custom_version
