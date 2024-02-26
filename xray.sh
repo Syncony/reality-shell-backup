@@ -135,8 +135,8 @@ reality_inbound() {
         KEYS=`./xray x25519`
         PIK=$(echo -e $KEYS | awk -F ' ' '{print $3}')
         PBK=$(echo -e $KEYS | awk -F ' ' '{print $6}')
-        echo "私钥:"${PIK}
-        echo "公钥:"${PBK}
+        echo "私钥:"${PIK} > ${Xray_PATH}keys.txt
+        echo -e "\n公钥:"${PBK} >> ${Xray_PATH}keys.txt 
     fi
     cat >>config.json<<EOF
         {
