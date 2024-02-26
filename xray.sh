@@ -185,7 +185,7 @@ local USERFLOW=""
 [ "${network_mode}" == "tcp" ] && USERFLOW="xtls-rprx-vision"
 sed -i 's/USERFLOW/'${USERFLOW}'/g' ./config.json
 
-GrpcX = ""
+GrpcX=""
 if [[ "${network_mode}" == "grpc" ]];then
     [[ ${network_mode} == "grpc" ]] && GrpcX=",\"grpcSettings\"\: \{\"serviceName\"\: \"grpc\"\}"
 fi
