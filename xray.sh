@@ -73,7 +73,7 @@ download_xray() {
 
     #here we need create directory for Xray-core
     [[ -f ${Xray_PATH}/config.json ]] && mv ${Xray_PATH}/config.json /etc/xray.bak.config.json
-    [[ -d ${Xray_PATH} ]] && rm ${Xray_PATH}/xray -f || mkdir ${Xray_PATH}
+    [[ -d ${Xray_PATH} ]] && rm ${Xray_PATH}/xray ${Xray_PATH}/xxray -rf || mkdir ${Xray_PATH}
     cd ${Xray_PATH}
     wget -N --no-check-certificate -O xray.zip ${DOWANLOAD_URL}
     mkdir ${Xray_PATH}xxray && unzip -d ${Xray_PATH}xxray ${Xray_PATH}xray.zip
