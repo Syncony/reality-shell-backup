@@ -171,7 +171,7 @@ if [[ -z ${PIK} ]];then
     PIK=$(echo -e $KEYS | awk -F ' ' '{print $2}')
     PBK=$(echo -e $KEYS | awk -F ' ' '{print $4}')
     echo "私钥:"${PIK} > ${Xray_PATH}keys.txt
-    echo -e "\n公钥:"${PBK} >> ${Xray_PATH}keys.txt 
+    echo "公钥:"${PBK} >> ${Xray_PATH}keys.txt 
 fi
 
 sed -i 's/PORT/'${Port}'/g' ./config.json
