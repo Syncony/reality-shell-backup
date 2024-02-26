@@ -136,7 +136,7 @@ reality_inbound() {
         PIK=$(echo -e $KEYS | awk -F ' ' '{print $3}')
         PBK=$(echo -e $KEYS | awk -F ' ' '{print $6}')
         echo "私钥:"${PIK} > ${Xray_PATH}keys.txt
-        echo -e "\n公钥:"${PBK} >> ${Xray_PATH}keys.txt 
+        echo "公钥:"${PBK} >> ${Xray_PATH}keys.txt 
     fi
     cat >>config.json<<EOF
         {
