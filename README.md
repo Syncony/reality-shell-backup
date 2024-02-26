@@ -3,9 +3,13 @@
 
 本人代码能力有限,欢迎大佬们补充纠正
 
-强烈推荐 sing-box 一把梭 直连就reality 中转就ss
+用Sing-Box:
 ```
-bash <(curl -sL 'https://raw.githubusercontent.com/Syncony/reality-shell-backup/main/singbox')
+bash <(curl -sL 'https://raw.githubusercontent.com/Syncony/reality-shell-backup/main/sing-box.sh')
+```
+用Xray-core:
+```
+bash <(curl -sL 'https://raw.githubusercontent.com/Syncony/reality-shell-backup/main/xray.sh')
 ```
 
 主要依赖:
