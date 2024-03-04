@@ -242,25 +242,6 @@ make_config() {
     "log": {
         "loglevel": "warning"
     },
-    "routing": {
-        "domainStrategy": "IPIfNonMatch",
-        "rules": [
-            {
-                "type": "field",
-                "port": "443",
-                "network": "udp",
-                "outboundTag": "block"
-            },
-            {
-                "type": "field",
-                "ip": [
-                    "geoip:cn",
-                    "geoip:private"
-                ],
-                "outboundTag": "block"
-            }
-        ]
-    },
     "inbounds": [
 EOF
       read -p "搭建Vless-Reality?[y/N/a](默认采用Shadowsocks,键入a同时搭建)" is_reality
