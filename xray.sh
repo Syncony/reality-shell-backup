@@ -191,7 +191,7 @@ if [[ "${network_mode}" == "grpc" ]];then
 fi
 sed -i "s/ \/\/grpcsetting/${GrpcX}/" ./config.json
 
-SHARE_LINK=${SHARE_LINK}"\nReality: vless://"${UUID}"@"${IP}":"${Port}"?security=reality&encryption=none&pbk="${PBK}"&headerType=none&fp=chrome&spx=%2F&type="${network_mode}"&sni="${SNI}"&sid="${SID}"&flow="${USERFLOW}"#Reality"
+SHARE_LINK=${SHARE_LINK}"\nReality: vless://"${UUID}"@"${IP}":"${Port}"?security=reality&encryption=none&pbk="${PBK}"&headerType=none&serviceName=grpc&fp=chrome&spx=%2F&type="${network_mode}"&sni="${SNI}"&sid="${SID}"&flow="${USERFLOW}"#Reality"
 }
 
 ss_inbound() {
