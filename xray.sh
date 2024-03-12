@@ -187,7 +187,7 @@ sed -i 's/USERFLOW/'${USERFLOW}'/g' ./config.json
 
 GrpcX=""
 if [[ "${network_mode}" == "grpc" ]];then
-    [[ ${network_mode} == "grpc" ]] && GrpcX=",\"grpcSettings\"\: \{\"serviceName\"\: \"\"\}"
+    [[ ${network_mode} == "grpc" ]] && GrpcX=",\"grpcSettings\"\: \{\"serviceName\"\: \"grpc\"\}"
 fi
 sed -i "s/ \/\/grpcsetting/${GrpcX}/" ./config.json
 
