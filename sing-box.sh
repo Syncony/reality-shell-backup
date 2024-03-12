@@ -191,7 +191,7 @@ EOF
         if [[ "${network_mode}" == "grpc" ]];then
           cat >>config.json<<EOF
 ,
-                "service_name": ""
+                "service_name": "grpc"
 EOF
         fi
 fi
@@ -204,7 +204,7 @@ cat >>config.json<<EOF
         }
 EOF
 fi
-SHARE_LINK=${SHARE_LINK}"\nReality: vless://"${UUID}"@"${IP}":"${Port}"?security=reality&encryption=none&pbk="${PBK}"&headerType=none&fp=chrome&spx=%2F&type="${network_mode}"&sni="${SNI}"&sid="${SID}"&flow="${USERFLOW}"#Reality"
+SHARE_LINK=${SHARE_LINK}"\nReality: vless://"${UUID}"@"${IP}":"${Port}"?security=reality&encryption=none&pbk="${PBK}"&headerType=none&fp=chrome&spx=%2F&serviceName=grpc&type="${network_mode}"&sni="${SNI}"&sid="${SID}"&flow="${USERFLOW}"#Reality"
 }
 
 ss_inbound() {
