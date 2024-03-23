@@ -129,6 +129,7 @@ reality_inbound() {
 		"enabled": true,
 		"padding": true
 	    },
+     	    "tcp_multi_path": true,
             "users": [
                 {
                     "uuid": "UUID",
@@ -223,6 +224,7 @@ ss_inbound() {
 		"enabled": true,
 		"padding": true
 	    },
+     	    "tcp_multi_path": true,
             "method": "${method}",
             "password": "${Passwd}"
         }
