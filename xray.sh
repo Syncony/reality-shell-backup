@@ -154,6 +154,9 @@ reality_inbound() {
             },
             "streamSettings": {
                 "network": "${network_mode}",
+		"sockpot": {
+          	    "tcpMptcp": true
+        	},
                 "security": "reality",
                 "realitySettings": {
                     "show": false,
@@ -212,6 +215,9 @@ ss_inbound() {
       },
       "streamSettings": {
         "network": "tcp",
+	"sockpot": {
+            "tcpMptcp": true
+        },
         "security": "none",
         "tcpSettings": {
           "header": {
