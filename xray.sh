@@ -197,9 +197,48 @@ sed -i "s/ \/\/grpcsetting/${GrpcX}/" ./config.json
 SHARE_LINK=${SHARE_LINK}"\nReality: vless://"${UUID}"@"${IP}":"${Port}"?security=reality&encryption=none&pbk="${PBK}"&headerType=none&serviceName=grpc&fp=chrome&spx=%2F&type="${network_mode}"&sni="${SNI}"&sid="${SID}"&flow="${USERFLOW}"#Reality"
 }
 
+vless_tcp_inbound() {
+    read -p "输入监听端口(0~65535):" Port
+    [ -z ${Port} ] && Port=1443
+    read -p "输入UUID(直接回车则随机生成):" UUID
+    [ -z ${UUID} ] && UUID=`./xray uuid`
+    cat >>config.json<<EOF
+        {
+            "listen": "::",
+            "port": ${Port},
+            "protocol": "vless",
+            "settings": {
+                "clients": [
+                    {
+                        "id": "${UUID}",
+                        "flow": ""
+                    }
+                ],
+                "decryption": "none"
+            },
+            "streamSettings": {
+                "network": "tcp",
+                "sockpot": {
+                    "tcpMptcp": true
+                },
+                "security": "none"
+            },
+            "sniffing": {
+                "enabled": true,
+                "destOverride": [
+                    "http",
+                    "tls",
+                    "quic"
+                ]
+            }
+        }
+EOF
+    SHARE_LINK=${SHARE_LINK}"\nVless+TCP: vless://${UUID}@${IP}:${Port}?security=none&&encryption=none&headerType=none&type=tcp#VlessTCP"
+}
+
 ss_inbound() {
     read -p "输入监听端口(0~65535):" Port
-    [ -z ${Port} ] && Port=443
+    [ -z ${Port} ] && Port=2443
     read -p "输入密码(直接回车随机生成):" Passwd
     [ -z ${Passwd} ] && Passwd=`openssl rand -base64 32`
     local method=$([[ ! -z `cat /proc/cpuinfo|grep aes` ]]&& echo "aes-128-gcm" || echo "chacha20-ietf-poly1305")
@@ -240,6 +279,17 @@ EOF
     SHARE_LINK=${SHARE_LINK}"\nShadowsocks: ss://${ss_encode}@${IP}:${Port}#SS"
 }
 
+ss_vless_inbound() {
+    read -p "使用Shadowsocks? (y/N)" useSS
+    [[ ${useSS} =~ ^[yY]$ ]] && ss_inbound
+    read -p "使用Vless+TCP？(y/N)" useVlessTCP
+    if [[ ${useSS} =~ ^[yY]$ && ${useVlessTCP} =~ ^[yY]$ ]];then
+        echo "," >> config.json
+    fi
+    [[ ${useVlessTCP} =~ ^[yY]$ ]] && vless_tcp_inbound
+    [[ -z ${SHARE_LINK} ]] && (echo "必选其一!" && sleep 3s && ss_vless_inbound)
+}
+
 make_config() {
     cd ${Xray_PATH}
     echo "" > config.json
@@ -250,11 +300,11 @@ make_config() {
     },
     "inbounds": [
 EOF
-      read -p "搭建Vless-Reality?[y/N/a](默认采用Shadowsocks,键入a同时搭建)" is_reality
+      read -p "搭建Vless-Reality?[y/N/a](默认采用Shadowsocks/Vless+TCP,键入a追加搭建Vless+Reality)" is_reality
       case ${is_reality} in
           a|A)
               echo -e "配置Shadowsocks:\n"
-              ss_inbound;
+              ss_vless_inbound;
 	      echo "," >> config.json
               echo -e "配置vless-reality:\n"
               reality_inbound
@@ -263,7 +313,7 @@ EOF
               reality_inbound
               ;;
           *)
-              ss_inbound
+              ss_vless_inbound
               ;;
       esac
       cat >> config.json <<EOF
@@ -348,7 +398,6 @@ install_systemd_service
 
 echo -e "${SHARE_LINK}" > ${Xray_PATH}/share.txt
 
-echo -e "
-Xray-core可执行文件与目录均位于:${Xray_PATH}
+echo -e "Xray-core可执行文件与目录均位于:${Xray_PATH}
 如需卸载只需要执行删除Xray服务和 ${Xray_PATH} 文件夹
 分享链接:${SHARE_LINK}"
