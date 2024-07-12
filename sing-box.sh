@@ -127,7 +127,12 @@ reality_inbound() {
             "listen_port": PORT,
 	        "multiplex": {
 		        "enabled": true,
-		        "padding": true
+		        "padding": true,
+                        "brutal": {
+                            "enabled": true,
+                            "up_mbps": 1000,
+                            "down_mbps": 1000
+                        }
 	        },
      	    "tcp_multi_path": true,
             "users": [
@@ -221,7 +226,12 @@ vless_tcp_inbound() {
             "listen_port": ${Port},
             "multiplex": {
                 "enabled": true,
-                "padding": true
+                "padding": true,
+                "brutal": {
+                    "enabled": true,
+                    "up_mbps": 1000,
+                    "down_mbps": 1000
+                }
             },
             "tcp_multi_path": true,
             "users": [
@@ -250,7 +260,12 @@ ss_inbound() {
             "listen_port": ${Port},
 	        "multiplex": {
 		        "enabled": true,
-		        "padding": true
+		        "padding": true,
+                        "brutal": {
+                            "enabled": true,
+                            "up_mbps": 1000,
+                            "down_mbps": 1000
+                        }
 	        },
      	    "tcp_multi_path": true,
             "method": "${method}",
