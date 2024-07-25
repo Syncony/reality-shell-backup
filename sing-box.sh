@@ -319,7 +319,9 @@ EOF
     "outbounds": [
         {
             "type": "direct",
-            "tag": "direct"
+            "tag": "direct",
+	    "domain_strategy": "prefer_ipv4",
+     	    "tcp_multi_path": true
         }
     ],
     "route": { 
