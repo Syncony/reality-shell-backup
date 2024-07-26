@@ -321,7 +321,8 @@ EOF
             "type": "direct",
             "tag": "direct",
 	    "domain_strategy": "prefer_ipv4",
-     	    "tcp_multi_path": true
+     	    "tcp_multi_path": true,
+	    "tcp_fast_open": true
         }
     ],
     "route": { 
@@ -396,6 +397,8 @@ EOF
 install_systemd_service
 
 echo -e "${SHARE_LINK}" > ${SING_BOX_PATH}/share.txt
+
+sysctl -w net.ipv4.tcp_fastopen=3
 
 echo -e "
 sing-box可执行文件与目录均位于:${SING_BOX_PATH}
