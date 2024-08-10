@@ -320,9 +320,7 @@ EOF
         {
             "type": "direct",
             "tag": "direct",
-	    "domain_strategy": "prefer_ipv4",
-     	    "tcp_multi_path": true,
-	    "tcp_fast_open": true
+	    "domain_strategy": "prefer_ipv4"
         }
     ],
     "route": { 
