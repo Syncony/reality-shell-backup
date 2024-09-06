@@ -169,7 +169,7 @@ read -p "自定义ShortID(不需要就直接回车):" SID
 [ -z ${SID} ] && SID=`openssl rand -hex 8`
 
 read -p "自定义SNI(不需要就直接回车):" SNI
-[ -z ${SNI} ] && SNI="www.fd.io"
+[ -z ${SNI} ] && SNI="www.openvswitch.org"
 
 read -p "自定义私钥(不需要就直接回车):" PIK
 if [[ -z ${PIK} ]];then
