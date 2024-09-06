@@ -125,15 +125,15 @@ reality_inbound() {
             "tag": "vless-in",
             "listen": "::",
             "listen_port": PORT,
-	        "multiplex": {
-		        "enabled": true,
-		        "padding": true,
-                        "brutal": {
-                            "enabled": true,
-                            "up_mbps": 1000,
-                            "down_mbps": 1000
-                        }
-	        },
+	    "multiplex": {
+		"enabled": true,
+		"padding": true,
+                "brutal": {
+		    "enabled": true,
+                    "up_mbps": 1000,
+                    "down_mbps": 1000
+                }
+	    },
      	    "tcp_multi_path": true,
             "users": [
                 {
