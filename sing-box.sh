@@ -169,7 +169,7 @@ read -p "自定义ShortID(不需要就直接回车):" SID
 [ -z ${SID} ] && SID=`openssl rand -hex 8`
 
 read -p "自定义SNI(不需要就直接回车):" SNI
-[ -z ${SNI} ] && SNI="www.goto.com"
+[ -z ${SNI} ] && SNI="www.fd.io"
 
 read -p "自定义私钥(不需要就直接回车):" PIK
 if [[ -z ${PIK} ]];then
@@ -273,7 +273,7 @@ ss_inbound() {
         }
 EOF
     local ss_encode=`echo -n $method:$Passwd|base64 | tr -d '\n'`
-    SHARE_LINK=${SHARE_LINK}"\nShadowsocks: ss://${ss_encode}@${IP}:${Port}#SS"
+    SHARE_LINK=${SHARE_LINK}"\nShadowsocks密码: ${Passwd}\nShadowsocks: ss://${ss_encode}@${IP}:${Port}#SS"
 }
 
 ss_vless_inbound() {
@@ -320,8 +320,7 @@ EOF
         {
             "type": "direct",
             "tag": "direct",
-	    "domain_strategy": "prefer_ipv4",
-     	    "tcp_multi_path": true
+	    "domain_strategy": "prefer_ipv4"
         }
     ],
     "route": { 
