@@ -385,6 +385,10 @@ LimitNOFILE=1000000
 WantedBy=multi-user.target
 EOF
     chmod +x ${SERVICE_FILE_PATH}
+    [[ ! -d /etc/systemd/system/sing-box.service.d ]] && mkdir /etc/systemd/system/sing-box.service.d
+    echo '[Service]
+CPUSchedulingPolicy=rr
+CPUSchedulingPriority=99' > /etc/systemd/system/sing-box.service.d/priority.conf
     systemctl daemon-reload
     systemctl enable sing-box 
     fi
