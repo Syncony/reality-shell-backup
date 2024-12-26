@@ -128,7 +128,7 @@ reality_inbound() {
     [ -z ${SID} ] && SID=`openssl rand -hex 8`
 
     read -p "自定义SNI(不需要就直接回车):" SNI
-    [ -z ${SNI} ] && SNI="www.goto.com"
+    [ -z ${SNI} ] && SNI="www.openvswitch.org"
 
     read -p "自定义私钥(不需要就直接回车):" PIK
     if [[ -z ${PIK} ]];then
@@ -226,7 +226,7 @@ ss_inbound() {
     [ -z ${Port} ] && Port=2443
     read -p "输入密码(直接回车随机生成):" Passwd
     [ -z ${Passwd} ] && Passwd=`openssl rand -base64 32`
-    local method=$([[ ! -z `cat /proc/cpuinfo|grep aes` ]]&& echo "aes-128-gcm" || echo "chacha20-ietf-poly1305")
+    local method=$([[ ! -z `cat /proc/cpuinfo|grep aes` ]]&& echo "2022-blake3-aes-256-gcm" || echo "2022-blake3-chacha20-ietf-poly1305")
     cat >>config.json<<EOF
       {
       "listen": "::",
