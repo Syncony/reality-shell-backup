@@ -155,13 +155,13 @@ reality_inbound() {
             "streamSettings": {
                 "network": "${network_mode}",
 		"sockpot": {
-          	    "tcpMptcp": true
+          	    "tcpMptcp": true,
+	       	    "tcpNoDelay": true,
+            	    "tcpFastOpen": true
         	},
                 "security": "reality",
                 "realitySettings": {
-                    "show": false,
                     "dest": "${SNI}:443",
-                    "xver": 0,
                     "serverNames": [
                         "${SNI}",
                         ""
@@ -172,14 +172,6 @@ reality_inbound() {
                         ""
                     ]
                 } //grpcsetting
-            },
-            "sniffing": {
-                "enabled": true,
-                "destOverride": [
-                    "http",
-                    "tls",
-                    "quic"
-                ]
             }
         }
 EOF
@@ -219,17 +211,10 @@ vless_tcp_inbound() {
             "streamSettings": {
                 "network": "tcp",
                 "sockpot": {
-                    "tcpMptcp": true
-                },
-                "security": "none"
-            },
-            "sniffing": {
-                "enabled": true,
-                "destOverride": [
-                    "http",
-                    "tls",
-                    "quic"
-                ]
+                    "tcpMptcp": true,
+		    "tcpNoDelay": true,
+            	    "tcpFastOpen": true
+                }
             }
         }
 EOF
@@ -249,30 +234,17 @@ ss_inbound() {
       "protocol": "shadowsocks",
       "settings": {
         "method": "${method}",
-        "password": "${Passwd}",
-        "network": "tcp,udp"
+        "password": "${Passwd}"
       },
       "streamSettings": {
         "network": "tcp",
 	"sockpot": {
-            "tcpMptcp": true
-        },
-        "security": "none",
-        "tcpSettings": {
-          "header": {
-            "type": "none"
-          },
-          "acceptProxyProtocol": false
+            "tcpMptcp": true,
+	    "tcpNoDelay": true,
+            "tcpFastOpen": true
         }
       },
-      "tag": "ss-in",
-      "sniffing": {
-        "enabled": true,
-        "destOverride": [
-          "http",
-          "tls"
-        ]
-      }
+      "tag": "ss-in"
     }
 EOF
     local ss_encode=`echo -n $method:$Passwd|base64 | tr -d '\n'`
@@ -387,6 +359,10 @@ LimitNOFILE=1000000
 WantedBy=multi-user.target
 EOF
     chmod +x ${SERVICE_FILE_PATH}
+    [[ ! -d /etc/systemd/system/Xray.service.d ]] && mkdir /etc/systemd/system/Xray.service.d
+    echo '[Service]
+CPUSchedulingPolicy=rr
+CPUSchedulingPriority=99' > /etc/systemd/system/Xray.service.d/priority.conf
     systemctl daemon-reload
     systemctl enable Xray 
     fi
