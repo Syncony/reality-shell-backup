@@ -154,11 +154,6 @@ reality_inbound() {
             },
             "streamSettings": {
                 "network": "${network_mode}",
-		"sockpot": {
-          	    "tcpMptcp": true,
-	       	    "tcpNoDelay": true,
-            	    "tcpFastOpen": true
-        	},
                 "security": "reality",
                 "realitySettings": {
                     "dest": "${SNI}:443",
@@ -209,12 +204,7 @@ vless_tcp_inbound() {
                 "decryption": "none"
             },
             "streamSettings": {
-                "network": "tcp",
-                "sockpot": {
-                    "tcpMptcp": true,
-		    "tcpNoDelay": true,
-            	    "tcpFastOpen": true
-                }
+                "network": "tcp"
             }
         }
 EOF
@@ -237,12 +227,7 @@ ss_inbound() {
         "password": "${Passwd}"
       },
       "streamSettings": {
-        "network": "tcp",
-	"sockpot": {
-            "tcpMptcp": true,
-	    "tcpNoDelay": true,
-            "tcpFastOpen": true
-        }
+        "network": "tcp"
       },
       "tag": "ss-in"
     }
