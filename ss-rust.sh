@@ -104,6 +104,7 @@ ss_inbound() {
     local method=$([[ ! -z `cat /proc/cpuinfo|grep aes` ]]&& echo "2022-blake3-aes-256-gcm" || echo "2022-blake3-chacha20-ietf-poly1305")
     cat >config.json<<EOF
 {
+    "mode": "tcp_and_udp",
     "server": "::",
     "server_port": ${Port},
     "method": "${method}",
