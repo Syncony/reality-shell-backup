@@ -107,12 +107,13 @@ ss_inbound() {
     "mode": "tcp_and_udp",
     "server": "::",
     "server_port": ${Port},
+    "fast_open": true,
     "method": "${method}",
     "password": "${Passwd}"
 }
 EOF
     local ss_encode=`echo -n $method:$Passwd|base64 | tr -d '\n'`
-    SHARE_LINK=${SHARE_LINK}"\nShadowsocks: ss://${ss_encode}@${IP}:${Port}#SS"
+    SHARE_LINK=${SHARE_LINK}"\nShadowsocks: ss://${ss_encode}@${IP}:${Port}#SS\nPassword: {$Passwd}"
 }
 
 ss_inbound
