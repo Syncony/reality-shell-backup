@@ -406,4 +406,6 @@ echo -e "
 sing-box可执行文件与目录均位于:${SING_BOX_PATH}
 如需卸载只需要执行删除sing-box服务和 ${SING_BOX_PATH} 文件夹
 默认优先使用ipv6，可修改config中directc outbound的domain_strategy配置项进行调整
-分享链接:${SHARE_LINK}"
+分享链接:${SHARE_LINK}
+
+如需使用mux多路复用：如使用vision流控请先删除流控,推荐使用h2mux"
