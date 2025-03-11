@@ -169,7 +169,7 @@ read -p "自定义ShortID(不需要就直接回车):" SID
 [ -z ${SID} ] && SID=`openssl rand -hex 8`
 
 read -p "自定义SNI(不需要就直接回车):" SNI
-[ -z ${SNI} ] && SNI="jetpack.com"
+[ -z ${SNI} ] && SNI="www.goto.com"
 
 read -p "自定义私钥(不需要就直接回车):" PIK
 if [[ -z ${PIK} ]];then
