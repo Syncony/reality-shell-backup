@@ -250,7 +250,7 @@ ss_inbound() {
     read -p "输入监听端口(0~65535):" Port
     [ -z ${Port} ] && Port=2443
     read -p "输入密码(直接回车随机生成):" Passwd
-    [ -z ${Passwd} ] && Passwd=$([[ ! -z `cat /proc/cpuinfo|grep aes` ]] && openssl rand -base64 12 || openssl rand -base64 32)
+    [ -z ${Passwd} ] && Passwd=$([[ ! -z `cat /proc/cpuinfo|grep aes` ]] && openssl rand -base64 16 || openssl rand -base64 32)
     local method=$([[ ! -z `cat /proc/cpuinfo|grep aes` ]] && echo "2022-blake3-aes-128-gcm" || echo "2022-blake3-chacha20-poly1305")
     cat >>config.json<<EOF
         {
