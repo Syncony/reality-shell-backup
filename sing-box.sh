@@ -144,6 +144,7 @@ reality_inbound() {
             "tls": {
                 "enabled": true,
                 "server_name": "CUSDEST",
+		"alpn": ["h2","http/1.1"],
                 "reality": {
                     "enabled": true,
                     "handshake": {
@@ -258,15 +259,15 @@ ss_inbound() {
             "tag": "ss-in",
             "listen": "::",
             "listen_port": ${Port},
-	        "multiplex": {
-		        "enabled": true,
-		        "padding": true,
-                        "brutal": {
-                            "enabled": true,
-                            "up_mbps": 1000,
-                            "down_mbps": 1000
-                        }
-	        },
+	    "multiplex": {
+	        "enabled": true,
+	        "padding": true,
+                "brutal": {
+                    "enabled": true,
+                    "up_mbps": 1000,
+                    "down_mbps": 1000
+                }
+	    },
      	    "tcp_multi_path": true,
             "method": "${method}",
             "password": "${Passwd}"
