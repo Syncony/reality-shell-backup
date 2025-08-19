@@ -72,7 +72,7 @@ download_sing_box() {
     local DOWANLOAD_URL="https://github.com/SagerNet/sing-box/releases/download/${SING_BOX_VERSION_TEMP}/sing-box-${SING_BOX_VERSION}-linux-${OS_ARCH}.tar.gz"
 
     #here we need create directory for sing-box
-    [[ -f ${SING_BOX_PATH}/config.json ]] && mv ${SING_BOX_PATH}/config.json /etc/sb.bak.config.json
+    [[ -f ${SING_BOX_PATH}/config.json ]] && mv ${SING_BOX_PATH}/config.json /etc/sb-anytls.bak.config.json
     [[ -d ${SING_BOX_PATH} ]] && rm ${SING_BOX_PATH}/sing-box -f || mkdir ${SING_BOX_PATH}
     cd ${SING_BOX_PATH}
     wget -N --no-check-certificate -O sb.tar.gz ${DOWANLOAD_URL}
@@ -85,7 +85,7 @@ download_sing_box() {
     else
         echo -e "\n下载sing-box成功"
     fi
-    [[ -f /etc/sb.bak.config.json ]] && cp /etc/sb.bak.config.json ${SING_BOX_PATH}/config.json
+    [[ -f /etc/sb-anytls.bak.config.json ]] && cp /etc/sb-anytls.bak.config.json ${SING_BOX_PATH}/config.json
 }
 
 download_sing_box
