@@ -189,6 +189,9 @@ vless_tcp_inbound() {
     [ -z ${Port} ] && Port=1443
     read -p "输入UUID(直接回车则随机生成):" UUID
     [ -z ${UUID} ] && UUID=`./xray uuid`
+	./xray x25519 > x25519
+ 	x25519Key=$(awk '/PrivateKey:/ {print $2}' x25519)
+ 	x25519Pwd=$(awk '/Password:/ {print $2}' x25519)
     cat >>config.json<<EOF
         {
             "listen": "::",
@@ -198,17 +201,17 @@ vless_tcp_inbound() {
                 "clients": [
                     {
                         "id": "${UUID}",
-                        "flow": ""
+                        "flow": "xtls-rprx-vision"
                     }
                 ],
-                "decryption": "none"
+                "decryption": "mlkem768x25519plus.xorpub.600s.${x25519Key}"
             },
             "streamSettings": {
                 "network": "tcp"
             }
         }
 EOF
-    SHARE_LINK=${SHARE_LINK}"\nVless+TCP: vless://${UUID}@${IP}:${Port}?security=none&&encryption=none&headerType=none&type=tcp#VlessTCP"
+    SHARE_LINK=${SHARE_LINK}"\nVless+TCP: vless://${UUID}@${IP}:${Port}?security=none&&encryption=xtls-rprx-vision&headerType=none&type=tcp&encryption=mlkem768x25519plus.xorpub.0rtt.${x25519Pwd}#VlessTCP"
 }
 
 ss_inbound() {
