@@ -211,7 +211,7 @@ vless_tcp_inbound() {
             }
         }
 EOF
-    SHARE_LINK=${SHARE_LINK}"\nVless+TCP: vless://${UUID}@${IP}:${Port}?security=none&&encryption=xtls-rprx-vision&headerType=none&type=tcp&encryption=mlkem768x25519plus.xorpub.0rtt.${x25519Pwd}#VlessTCP"
+    SHARE_LINK=${SHARE_LINK}"\nVless+TCP: vless://${UUID}@${IP}:${Port}?security=none&&flow=xtls-rprx-vision&headerType=none&type=tcp&encryption=mlkem768x25519plus.xorpub.0rtt.${x25519Pwd}#VlessTCP"
 }
 
 ss_inbound() {
