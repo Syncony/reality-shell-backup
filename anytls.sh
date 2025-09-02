@@ -134,7 +134,7 @@ anytls_inbound() {
                         "server": "global.fujifilm.com",
                         "server_port": 443
                     },
-                    "private_key": "${PRIKEY}",
+                    "private_key": "${PIK}",
                     "short_id": [
                         ""
                     ]
