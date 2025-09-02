@@ -320,8 +320,7 @@ EOF
     "outbounds": [
         {
             "type": "direct",
-            "tag": "direct",
-	    "domain_strategy": "prefer_ipv4"
+            "tag": "direct"
         }
     ]
 }
