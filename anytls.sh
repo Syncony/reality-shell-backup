@@ -110,7 +110,8 @@ anytls_inbound() {
     PBK=$(echo -e $KEYS | awk -F ' ' '{print $4}')
     echo "私钥:"${PIK} > ${SING_BOX_PATH}keys.txt
     echo "公钥:"${PBK} >> ${SING_BOX_PATH}keys.txt
-
+	SID=`openssl rand -hex 8`
+ 
 	cat >>config.json<<EOF
         {
             "type": "anytls",
@@ -136,13 +137,14 @@ anytls_inbound() {
                     },
                     "private_key": "${PIK}",
                     "short_id": [
+						"${SID}",
                         ""
                     ]
                 }
 			}
         }
 EOF
-    SHARE_LINK=${SHARE_LINK}"\nanytls://${Passwd}@${IP}:${Port}/?security=reality&pbk=${PBK}&sni=global.fujifilm.com#AnyTLS"
+    SHARE_LINK=${SHARE_LINK}"\nanytls://${Passwd}@${IP}:${Port}/?security=reality&pbk=${PBK}&sni=global.fujifilm.com&sid=${SID}#AnyTLS"
 }
 
 make_config() {
