@@ -102,15 +102,15 @@ anytls_inbound() {
     [ -z ${Port} ] && Port=27016
     read -p "输入密码(直接回车随机生成):" Passwd
     [ -z ${Passwd} ] && Passwd=$([[ ! -z `cat /proc/cpuinfo|grep aes` ]] && openssl rand -base64 16 || openssl rand -base64 32)
-    # [[ ! -d ${SING_BOX_PATH}cert ]] && mkdir ${SING_BOX_PATH}cert
-    # rm ${SING_BOX_PATH}cert/cert.pem ${SING_BOX_PATH}cert/private.key -f
-    # openssl ecparam -genkey -name prime256v1 -out ${SING_BOX_PATH}cert/private.key && openssl req -new -x509 -days 36500 -key ${SING_BOX_PATH}cert/private.key -out ${SING_BOX_PATH}cert/cert.pem -subj "/CN=$(awk -F . '{print $(NF-1)"."$NF}' <<< "global.fujifilm.com")"
-	KEYS=`${SING_BOX_PATH}sing-box generate reality-keypair`
-    PIK=$(echo -e $KEYS | awk -F ' ' '{print $2}')
-    PBK=$(echo -e $KEYS | awk -F ' ' '{print $4}')
-    echo "私钥:"${PIK} > ${SING_BOX_PATH}keys.txt
-    echo "公钥:"${PBK} >> ${SING_BOX_PATH}keys.txt
-	SID=`openssl rand -hex 8`
+    [[ ! -d ${SING_BOX_PATH}cert ]] && mkdir ${SING_BOX_PATH}cert
+    rm ${SING_BOX_PATH}cert/cert.pem ${SING_BOX_PATH}cert/private.key -f
+    openssl ecparam -genkey -name prime256v1 -out ${SING_BOX_PATH}cert/private.key && openssl req -new -x509 -days 36500 -key ${SING_BOX_PATH}cert/private.key -out ${SING_BOX_PATH}cert/cert.pem -subj "/CN=$(awk -F . '{print $(NF-1)"."$NF}' <<< "global.fujifilm.com")"
+	# KEYS=`${SING_BOX_PATH}sing-box generate reality-keypair`
+    # PIK=$(echo -e $KEYS | awk -F ' ' '{print $2}')
+    # PBK=$(echo -e $KEYS | awk -F ' ' '{print $4}')
+    # echo "私钥:"${PIK} > ${SING_BOX_PATH}keys.txt
+    # echo "公钥:"${PBK} >> ${SING_BOX_PATH}keys.txt
+	# SID=`openssl rand -hex 8`
  
 	cat >>config.json<<EOF
         {
@@ -128,23 +128,12 @@ anytls_inbound() {
             ],
             "tls": {
                 "enabled": true,
-                "server_name": "global.fujifilm.com",
-                "reality": {
-                    "enabled": true,
-                    "handshake": {
-                        "server": "global.fujifilm.com",
-                        "server_port": 443
-                    },
-                    "private_key": "${PIK}",
-                    "short_id": [
-						"${SID}",
-                        ""
-                    ]
-                }
+				"certificate_path": ${SING_BOX_PATH}cert/cert.pem,
+                "key_path": ${SING_BOX_PATH}cert/private.key
 			}
         }
 EOF
-    SHARE_LINK=${SHARE_LINK}"\nanytls://${Passwd}@${IP}:${Port}/?security=reality&pbk=${PBK}&sni=global.fujifilm.com&sid=${SID}#AnyTLS"
+    SHARE_LINK=${SHARE_LINK}"\nanytls://${Passwd}@${IP}:${Port}/?insecure=1&sni=global.fujifilm.com#AnyTLS"
 }
 
 make_config() {
