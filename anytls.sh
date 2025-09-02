@@ -105,7 +105,7 @@ anytls_inbound() {
     # [[ ! -d ${SING_BOX_PATH}cert ]] && mkdir ${SING_BOX_PATH}cert
     # rm ${SING_BOX_PATH}cert/cert.pem ${SING_BOX_PATH}cert/private.key -f
     # openssl ecparam -genkey -name prime256v1 -out ${SING_BOX_PATH}cert/private.key && openssl req -new -x509 -days 36500 -key ${SING_BOX_PATH}cert/private.key -out ${SING_BOX_PATH}cert/cert.pem -subj "/CN=$(awk -F . '{print $(NF-1)"."$NF}' <<< "global.fujifilm.com")"
-	KEYS=`./sing-box generate reality-keypair`
+	KEYS=`${SING_BOX_PATH}sing-box generate reality-keypair`
     PIK=$(echo -e $KEYS | awk -F ' ' '{print $2}')
     PBK=$(echo -e $KEYS | awk -F ' ' '{print $4}')
     echo "私钥:"${PIK} > ${SING_BOX_PATH}keys.txt
