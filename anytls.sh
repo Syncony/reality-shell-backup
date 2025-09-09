@@ -128,10 +128,10 @@ anytls_inbound() {
             ],
             "tls": {
                 "enabled": true,
-				"certificate_path": "${SING_BOX_PATH}cert/cert.pem",
+                "certificate_path": "${SING_BOX_PATH}cert/cert.pem",
                 "key_path": "${SING_BOX_PATH}cert/private.key"
-			}
-        }
+            }
+            }
 EOF
     SHARE_LINK=${SHARE_LINK}"\nanytls://${Passwd}@${IP}:${Port}/?insecure=1&sni=global.fujifilm.com#AnyTLS"
 }
