@@ -128,8 +128,8 @@ anytls_inbound() {
             ],
             "tls": {
                 "enabled": true,
-				"certificate_path": ${SING_BOX_PATH}cert/cert.pem,
-                "key_path": ${SING_BOX_PATH}cert/private.key
+				"certificate_path": "${SING_BOX_PATH}cert/cert.pem",
+                "key_path": "${SING_BOX_PATH}cert/private.key"
 			}
         }
 EOF
