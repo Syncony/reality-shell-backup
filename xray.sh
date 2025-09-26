@@ -223,11 +223,9 @@ ss_inbound() {
       "port": ${Port},
       "protocol": "shadowsocks",
       "settings": {
+	    "network": "tcp,udp",
         "method": "${method}",
         "password": "${Passwd}"
-      },
-      "streamSettings": {
-        "network": "tcp"
       },
       "tag": "ss-in"
     }
