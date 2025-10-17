@@ -63,7 +63,7 @@ install_base() {
 download_sing_box() {
     echo -e "\n开始下载sing-box...\n"
     os_check && arch_check && install_base
-    local SING_BOX_VERSION_TEMP=$(curl -s https://api.github.com/repos/SagerNet/sing-box/releases/latest | sed 'y/,/\n/' | grep 'tag_name' | awk -F '"' '{print $4}')
+    local SING_BOX_VERSION_TEMP=$(curl -s https://api.github.com/repos/SagerNet/sing-box/releases | jq -r 'map(select(.prerelease == true)) | first' | sed 'y/,/\n/' | grep 'tag_name' | awk -F '"' '{print $4}')
     [ -z "${SING_BOX_VERSION_TEMP}" ] && SING_BOX_VERSION_TEMP="v1.8.0"
     read -p "自定义版本号:" custom_version
     [ -z ${custom_version} ] || SING_BOX_VERSION_TEMP="v"$custom_version
