@@ -128,6 +128,7 @@ anytls_inbound() {
             ],
             "tls": {
                 "enabled": true,
+				"min_version": "1.3",
                 "certificate_path": "${SING_BOX_PATH}cert/cert.pem",
                 "key_path": "${SING_BOX_PATH}cert/private.key"
             }
