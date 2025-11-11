@@ -128,7 +128,7 @@ reality_inbound() {
     [ -z ${SID} ] && SID=`openssl rand -hex 8`
 
     read -p "自定义SNI(不需要就直接回车):" SNI
-    [ -z ${SNI} ] && SNI="global.fujifilm.com"
+    [ -z ${SNI} ] && SNI="c.speedtestcustom.com"
 
     read -p "自定义私钥(不需要就直接回车):" PIK
     if [[ -z ${PIK} ]];then
