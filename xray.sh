@@ -154,6 +154,9 @@ reality_inbound() {
             },
             "streamSettings": {
                 "network": "${network_mode}",
+				"sockopt": {
+					"tcpWindowClamp": 2048
+				},
                 "security": "reality",
                 "realitySettings": {
                     "dest": "${SNI}:443",
@@ -205,7 +208,12 @@ vless_tcp_inbound() {
                     }
                 ],
                 "decryption": "mlkem768x25519plus.xorpub.600s.${x25519Key}"
-            }
+            },
+			"streamSettings": {
+				"sockopt": {
+					"tcpWindowClamp": 2048
+				}
+			}
         }
 EOF
     SHARE_LINK=${SHARE_LINK}"\nVless+TCP: vless://${UUID}@${IP}:${Port}?security=none&flow=xtls-rprx-vision&headerType=none&type=tcp&encryption=mlkem768x25519plus.xorpub.0rtt.${x25519Pwd}#VlessTCP\n\nuuid: ${UUID}\nencryption: mlkem768x25519plus.xorpub.0rtt.${x25519Pwd}"
@@ -227,6 +235,11 @@ ss_inbound() {
         "method": "${method}",
         "password": "${Passwd}"
       },
+	  "streamSettings": {
+	  	"sockopt": {
+			"tcpWindowClamp": 2048
+		}
+	  },
       "tag": "ss-in"
     }
 EOF
@@ -276,6 +289,11 @@ EOF
     "outbounds": [
         {
             "protocol": "freedom",
+			"streamSettings": {
+				"sockopt": {
+					"tcpWindowClamp": 2048
+				}
+			},
             "tag": "direct"
         },
         {
