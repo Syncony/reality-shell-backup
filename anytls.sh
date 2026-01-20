@@ -113,26 +113,26 @@ anytls_inbound() {
 	# SID=`openssl rand -hex 8`
  
 	cat >>config.json<<EOF
-        {
-            "type": "anytls",
-            "tag": "anytls-in",
-            "listen": "::",
-            "listen_port": ${Port},
-     	    "tcp_multi_path": true,
-            "tcp_fast_open": true,
-            "users": [
-                {
-                    "name": "diego",
-                    "password": "${Passwd}"
-                }
-            ],
-            "tls": {
-                "enabled": true,
+		{
+			"type": "anytls",
+			"tag": "anytls-in",
+			"listen": "::",
+			"listen_port": ${Port},
+			"tcp_multi_path": true,
+			"tcp_fast_open": true,
+			"users": [
+				{
+					"name": "diego",
+					"password": "${Passwd}"
+				}
+			],
+			"tls": {
+				"enabled": true,
 				"min_version": "1.3",
-                "certificate_path": "${SING_BOX_PATH}cert/cert.pem",
-                "key_path": "${SING_BOX_PATH}cert/private.key"
-            }
-            }
+				"certificate_path": "${SING_BOX_PATH}cert/cert.pem",
+				"key_path": "${SING_BOX_PATH}cert/private.key"
+			}
+		}
 EOF
     SHARE_LINK=${SHARE_LINK}"\nanytls://${Passwd}@${IP}:${Port}/?insecure=1&sni=c.speedtestcustom.com#AnyTLS"
 }
@@ -143,20 +143,20 @@ make_config() {
     echo "">sing-box.log
     cat >> config.json <<EOF
 {
-    "log": {
-        "disabled": true
-    },
-    "inbounds": [
+	"log": {
+		"disabled": true
+	},
+	"inbounds": [
 EOF
       anytls_inbound
       cat >> config.json <<EOF
-    ],
-    "outbounds": [
-        {
-            "type": "direct",
-            "tag": "direct"
-        }
-    ]
+	],
+	"outbounds": [
+		{
+			"type": "direct",
+			"tag": "direct"
+		}
+	]
 }
 EOF
 }
