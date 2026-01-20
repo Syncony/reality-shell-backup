@@ -139,39 +139,39 @@ reality_inbound() {
         echo "公钥:"${PBK} >> ${Xray_PATH}keys.txt 
     fi
     cat >>config.json<<EOF
-        {
-            "listen": "::",
-            "port": ${Port},
-            "protocol": "vless",
-            "settings": {
-                "clients": [
-                    {
-                        "id": "${UUID}",
-                        "flow": "USERFLOW"
-                    }
-                ],
-                "decryption": "none"
-            },
-            "streamSettings": {
-                "network": "${network_mode}",
+		{
+			"listen": "::",
+			"port": ${Port},
+			"protocol": "vless",
+			"settings": {
+				"clients": [
+					{
+						"id": "${UUID}",
+						"flow": "USERFLOW"
+					}
+				],
+				"decryption": "none"
+			},
+			"streamSettings": {
+				"network": "${network_mode}",
 				"sockopt": {
 					"tcpWindowClamp": 2048
 				},
-                "security": "reality",
-                "realitySettings": {
-                    "dest": "${SNI}:443",
-                    "serverNames": [
-                        "${SNI}",
-                        ""
-                    ],
-                    "privateKey": "${PIK}",
-                    "shortIds": [
-                        "${SID}",
-                        ""
-                    ]
-                } //grpcsetting
-            }
-        }
+				"security": "reality",
+				"realitySettings": {
+					"dest": "${SNI}:443",
+					"serverNames": [
+						"${SNI}",
+						""
+					],
+					"privateKey": "${PIK}",
+					"shortIds": [
+						"${SID}",
+						""
+					]
+				} //grpcsetting
+			}
+		}
 EOF
 
 local USERFLOW=""
@@ -196,25 +196,25 @@ vless_tcp_inbound() {
  	x25519Key=$(awk '/PrivateKey:/ {print $2}' x25519)
  	x25519Pwd=$(awk '/Password:/ {print $2}' x25519)
     cat >>config.json<<EOF
-        {
-            "listen": "::",
-            "port": ${Port},
-            "protocol": "vless",
-            "settings": {
-                "clients": [
-                    {
-                        "id": "${UUID}",
-                        "flow": "xtls-rprx-vision"
-                    }
-                ],
-                "decryption": "mlkem768x25519plus.xorpub.600s.${x25519Key}"
-            },
+		{
+			"listen": "::",
+			"port": ${Port},
+			"protocol": "vless",
+			"settings": {
+				"clients": [
+					{
+						"id": "${UUID}",
+						"flow": "xtls-rprx-vision"
+					}
+				],
+				"decryption": "mlkem768x25519plus.xorpub.600s.${x25519Key}"
+			},
 			"streamSettings": {
 				"sockopt": {
 					"tcpWindowClamp": 2048
 				}
 			}
-        }
+		}
 EOF
     SHARE_LINK=${SHARE_LINK}"\nVless+TCP: vless://${UUID}@${IP}:${Port}?security=none&flow=xtls-rprx-vision&headerType=none&type=tcp&encryption=mlkem768x25519plus.xorpub.0rtt.${x25519Pwd}#VlessTCP\n\nuuid: ${UUID}\nencryption: mlkem768x25519plus.xorpub.0rtt.${x25519Pwd}"
 }
@@ -226,22 +226,22 @@ ss_inbound() {
     [ -z ${Passwd} ] && Passwd=$([[ ! -z `cat /proc/cpuinfo|grep aes` ]] && openssl rand -base64 16 || openssl rand -base64 32)
     local method=$([[ ! -z `cat /proc/cpuinfo|grep aes` ]] && echo "2022-blake3-aes-128-gcm" || echo "2022-blake3-chacha20-poly1305")
     cat >>config.json<<EOF
-      {
-      "listen": "::",
-      "port": ${Port},
-      "protocol": "shadowsocks",
-      "settings": {
-	    "network": "tcp,udp",
-        "method": "${method}",
-        "password": "${Passwd}"
-      },
-	  "streamSettings": {
-	  	"sockopt": {
-			"tcpWindowClamp": 2048
+		{
+			"listen": "::",
+			"port": ${Port},
+			"protocol": "shadowsocks",
+			"settings": {
+				"network": "tcp,udp",
+				"method": "${method}",
+				"password": "${Passwd}"
+			},
+			"streamSettings": {
+				"sockopt": {
+					"tcpWindowClamp": 2048
+				}
+			},
+			"tag": "ss-in"
 		}
-	  },
-      "tag": "ss-in"
-    }
 EOF
     local ss_encode=`echo -n $method:$Passwd|base64 | tr -d '\n'`
     SHARE_LINK=${SHARE_LINK}"\nShadowsocks: ss://${ss_encode}@${IP}:${Port}#SS"
@@ -263,10 +263,10 @@ make_config() {
     echo "" > config.json
     cat >> config.json <<EOF
 {
-    "log": {
-        "loglevel": "warning"
-    },
-    "inbounds": [
+	"log": {
+		"loglevel": "warning"
+	},
+	"inbounds": [
 EOF
       read -p "搭建Vless-Reality?[y/N/a](默认采用Shadowsocks/Vless+TCP,键入a追加搭建Vless+Reality)" is_reality
       case ${is_reality} in
@@ -285,22 +285,22 @@ EOF
               ;;
       esac
       cat >> config.json <<EOF
-    ],
-    "outbounds": [
-        {
-            "protocol": "freedom",
+	],
+	"outbounds": [
+		{
+			"protocol": "freedom",
 			"streamSettings": {
 				"sockopt": {
 					"tcpWindowClamp": 2048
 				}
 			},
-            "tag": "direct"
-        },
-        {
-            "protocol": "blackhole",
-            "tag": "block"
-        }
-    ]
+			"tag": "direct"
+		},
+		{
+			"protocol": "blackhole",
+			"tag": "block"
+		}
+	]
 }
 EOF
 }
