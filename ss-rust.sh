@@ -104,13 +104,13 @@ ss_inbound() {
     local method=$([[ ! -z `cat /proc/cpuinfo|grep aes` ]]&& echo "2022-blake3-aes-128-gcm" || echo "2022-blake3-chacha20-ietf-poly1305")
     cat >config.json<<EOF
 {
-    "mode": "tcp_and_udp",
-    "no_delay": true,
-    "server": "::",
-    "server_port": ${Port},
-    "fast_open": true,
-    "method": "${method}",
-    "password": "${Passwd}"
+	"mode": "tcp_and_udp",
+	"no_delay": true,
+	"server": "::",
+	"server_port": ${Port},
+	"fast_open": true,
+	"method": "${method}",
+	"password": "${Passwd}"
 }
 EOF
     local ss_encode=`echo -n $method:$Passwd|base64 | tr -d '\n'`
