@@ -120,44 +120,44 @@ reality_inbound() {
     }
     choose_network
     cat >>config.json<<EOF
-        {
-            "type": "vless",
-            "tag": "vless-in",
-            "listen": "::",
-            "listen_port": PORT,
-	    "multiplex": {
-		"enabled": true,
-		"padding": true,
-                "brutal": {
-		    "enabled": true,
-                    "up_mbps": 1000,
-                    "down_mbps": 1000
-                }
-	    },
-     	    "tcp_multi_path": true,
-            "users": [
-                {
-                    "uuid": "UUID",
-                    "flow": "USERFLOW"
-                }
-            ],
-            "tls": {
-                "enabled": true,
-                "server_name": "CUSDEST",
-		"alpn": ["h2","http/1.1"],
-                "reality": {
-                    "enabled": true,
-                    "handshake": {
-                        "server": "CUSDEST",
-                        "server_port": 443
-                    },
-                    "private_key": "PRIKEY",
-                    "short_id": [
-                        "SID",
-                        ""
-                    ]
-                }
-            }
+		{
+			"type": "vless",
+			"tag": "vless-in",
+			"listen": "::",
+			"listen_port": PORT,
+			"multiplex": {
+				"enabled": true,
+				"padding": true,
+				"brutal": {
+					"enabled": true,
+					"up_mbps": 1000,
+					"down_mbps": 1000
+				}
+			},
+			"tcp_multi_path": true,
+			"users": [
+				{
+					"uuid": "UUID",
+					"flow": "USERFLOW"
+				}
+			],
+			"tls": {
+				"enabled": true,
+				"server_name": "CUSDEST",
+				"alpn": ["h2","http/1.1"],
+				"reality": {
+					"enabled": true,
+					"handshake": {
+						"server": "CUSDEST",
+						"server_port": 443
+					},
+					"private_key": "PRIKEY",
+					"short_id": [
+						"SID",
+						""
+					]
+				}
+			}
 EOF
 
 read -p "输入监听端口(0~65535):" Port
@@ -204,11 +204,11 @@ EOF
 fi
 cat >>config.json<<EOF
 
-            }
+			}
 EOF
 if [[ "${network_mode}" != "tcp" ]];then
 cat >>config.json<<EOF
-        }
+		}
 EOF
 fi
 SHARE_LINK=${SHARE_LINK}"\nReality: vless://"${UUID}"@"${IP}":"${Port}"?security=reality&encryption=none&pbk="${PBK}"&headerType=none&fp=chrome&spx=%2F&serviceName=grpc&type="${network_mode}"&sni="${SNI}"&sid="${SID}"&flow="${USERFLOW}"#Reality"
@@ -220,29 +220,29 @@ vless_tcp_inbound() {
     read -p "输入UUID(直接回车则随机生成):" UUID
     [ -z ${UUID} ] && UUID=`./sing-box generate uuid`
     cat >>config.json<<EOF
-        {
-            "type": "vless",
-            "tag": "vless-tcp-in",
-            "listen": "::",
-            "listen_port": ${Port},
-            "multiplex": {
-                "enabled": true,
-                "padding": true,
-                "brutal": {
-                    "enabled": true,
-                    "up_mbps": 1000,
-                    "down_mbps": 1000
-                }
-            },
-            "tcp_multi_path": true,
-            "users": [
-                {
-                    "name": "nh",
-                    "uuid": "${UUID}",
-                    "flow": ""
-                }
-            ]
-        }
+		{
+			"type": "vless",
+			"tag": "vless-tcp-in",
+			"listen": "::",
+			"listen_port": ${Port},
+			"multiplex": {
+				"enabled": true,
+				"padding": true,
+				"brutal": {
+					"enabled": true,
+					"up_mbps": 1000,
+					"down_mbps": 1000
+				}
+			},
+			"tcp_multi_path": true,
+			"users": [
+				{
+					"name": "nh",
+					"uuid": "${UUID}",
+					"flow": ""
+				}
+			]
+	}
 EOF
     SHARE_LINK=${SHARE_LINK}"\nVless+TCP: vless://${UUID}@${IP}:${Port}?security=none&&encryption=none&headerType=none&type=tcp#VlessTCP"
 }
@@ -254,24 +254,24 @@ ss_inbound() {
     [ -z ${Passwd} ] && Passwd=$([[ ! -z `cat /proc/cpuinfo|grep aes` ]] && openssl rand -base64 16 || openssl rand -base64 32)
     local method=$([[ ! -z `cat /proc/cpuinfo|grep aes` ]] && echo "2022-blake3-aes-128-gcm" || echo "2022-blake3-chacha20-poly1305")
     cat >>config.json<<EOF
-        {
-            "type": "shadowsocks",
-            "tag": "ss-in",
-            "listen": "::",
-            "listen_port": ${Port},
-	    "multiplex": {
-	        "enabled": true,
-	        "padding": true,
-                "brutal": {
-                    "enabled": true,
-                    "up_mbps": 1000,
-                    "down_mbps": 1000
-                }
-	    },
-     	    "tcp_multi_path": true,
-            "method": "${method}",
-            "password": "${Passwd}"
-        }
+		{
+			"type": "shadowsocks",
+			"tag": "ss-in",
+			"listen": "::",
+			"listen_port": ${Port},
+			"multiplex": {
+				"enabled": true,
+				"padding": true,
+				"brutal": {
+					"enabled": true,
+					"up_mbps": 1000,
+					"down_mbps": 1000
+				}
+			},
+			"tcp_multi_path": true,
+			"method": "${method}",
+			"password": "${Passwd}"
+		}
 EOF
     local ss_encode=`echo -n $method:$Passwd|base64 | tr -d '\n'`
     SHARE_LINK=${SHARE_LINK}"\nShadowsocks密码: ${Passwd}\nShadowsocks: ss://${ss_encode}@${IP}:${Port}#SS"
@@ -294,10 +294,10 @@ make_config() {
     echo "">sing-box.log
     cat >> config.json <<EOF
 {
-    "log": {
-        "disabled": true
-    },
-    "inbounds": [
+	"log": {
+		"disabled": true
+	},
+	"inbounds": [
 EOF
       read -p "搭建Vless-Reality?[y/N/a](默认采用Shadowsocks或vless+tcp,键入a追加搭建vless+reality)" is_reality
       case ${is_reality} in
@@ -316,13 +316,13 @@ EOF
               ;;
       esac
       cat >> config.json <<EOF
-    ],
-    "outbounds": [
-        {
-            "type": "direct",
-            "tag": "direct"
-        }
-    ]
+	],
+	"outbounds": [
+		{
+			"type": "direct",
+			"tag": "direct"
+		}
+	]
 }
 EOF
 }
