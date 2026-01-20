@@ -208,11 +208,6 @@ vless_tcp_inbound() {
 					}
 				],
 				"decryption": "mlkem768x25519plus.xorpub.600s.${x25519Key}"
-			},
-			"streamSettings": {
-				"sockopt": {
-					"tcpWindowClamp": 2048
-				}
 			}
 		}
 EOF
