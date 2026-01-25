@@ -154,9 +154,6 @@ reality_inbound() {
 			},
 			"streamSettings": {
 				"network": "${network_mode}",
-				"sockopt": {
-					"tcpWindowClamp": 2048
-				},
 				"security": "reality",
 				"realitySettings": {
 					"dest": "${SNI}:443",
@@ -229,11 +226,6 @@ ss_inbound() {
 				"network": "tcp,udp",
 				"method": "${method}",
 				"password": "${Passwd}"
-			},
-			"streamSettings": {
-				"sockopt": {
-					"tcpWindowClamp": 2048
-				}
 			},
 			"tag": "ss-in"
 		}
