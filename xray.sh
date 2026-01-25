@@ -284,11 +284,6 @@ EOF
 	"outbounds": [
 		{
 			"protocol": "freedom",
-			"streamSettings": {
-				"sockopt": {
-					"tcpWindowClamp": 2048
-				}
-			},
 			"tag": "direct"
 		},
 		{
