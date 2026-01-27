@@ -104,7 +104,7 @@ anytls_inbound() {
     [ -z ${Passwd} ] && Passwd=$([[ ! -z `cat /proc/cpuinfo|grep aes` ]] && openssl rand -base64 16 || openssl rand -base64 32)
     [[ ! -d ${SING_BOX_PATH}cert ]] && mkdir ${SING_BOX_PATH}cert
     rm ${SING_BOX_PATH}cert/cert.pem ${SING_BOX_PATH}cert/private.key -f
-    openssl ecparam -genkey -name prime256v1 -out ${SING_BOX_PATH}cert/private.key && openssl req -new -x509 -days 36500 -key ${SING_BOX_PATH}cert/private.key -out ${SING_BOX_PATH}cert/cert.pem -subj "/CN=$(awk -F . '{print $(NF-1)"."$NF}' <<< "c.speedtestcustom.com")"
+    openssl ecparam -genkey -name prime256v1 -out ${SING_BOX_PATH}cert/private.key && openssl req -new -x509 -days 36500 -key ${SING_BOX_PATH}cert/private.key -out ${SING_BOX_PATH}cert/cert.pem -subj "/CN=$(awk -F . '{print $(NF-1)"."$NF}' <<< "upos-sz-mirrorcosbstar.bilivideo.com")"
 	# KEYS=`${SING_BOX_PATH}sing-box generate reality-keypair`
     # PIK=$(echo -e $KEYS | awk -F ' ' '{print $2}')
     # PBK=$(echo -e $KEYS | awk -F ' ' '{print $4}')
@@ -134,7 +134,7 @@ anytls_inbound() {
 			}
 		}
 EOF
-    SHARE_LINK=${SHARE_LINK}"\nanytls://${Passwd}@${IP}:${Port}/?insecure=1&sni=c.speedtestcustom.com#AnyTLS"
+    SHARE_LINK=${SHARE_LINK}"\nanytls://${Passwd}@${IP}:${Port}/?insecure=1&sni=upos-sz-mirrorcosbstar.bilivideo.com#AnyTLS"
 }
 
 make_config() {
