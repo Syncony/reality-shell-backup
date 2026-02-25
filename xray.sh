@@ -255,7 +255,8 @@ make_config() {
 	},
 	"dns": {
 		"servers": ["localhost"],
-		"queryStrategy": "UseSystem"
+		"queryStrategy": "UseSystem",
+		"disableCache": true
 	},
 	"inbounds": [
 EOF
