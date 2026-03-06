@@ -281,7 +281,7 @@ EOF
 	"outbounds": [
 		{
 			"protocol": "freedom",
-			"queryStrategy": "UseIP",
+			"domainStrategy": "UseIP",
 			"tag": "direct"
 		},
 		{
