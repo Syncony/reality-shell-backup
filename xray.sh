@@ -191,7 +191,7 @@ vless_tcp_inbound() {
     [ -z ${UUID} ] && UUID=`./xray uuid`
 	./xray x25519 > x25519
  	x25519Key=$(awk '/PrivateKey:/ {print $2}' x25519)
- 	x25519Pwd=$(awk '/Password:/ {print $2}' x25519)
+ 	x25519Pwd=$(awk '/Password \(PublicKey\):/ {print $3}' x25519)
     cat >>config.json<<EOF
 		{
 			"listen": "::",
