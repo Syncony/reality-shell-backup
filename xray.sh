@@ -134,7 +134,7 @@ reality_inbound() {
     if [[ -z ${PIK} ]];then
         KEYS=`./xray x25519`
         PIK=$(echo -e $KEYS | awk -F ' ' '{print $2}')
-        PBK=$(echo -e $KEYS | awk -F ' ' '{print $4}')
+        PBK=$(echo -e $KEYS | awk -F ' ' '{print $5}')
         echo "私钥:"${PIK} > ${Xray_PATH}keys.txt
         echo "公钥:"${PBK} >> ${Xray_PATH}keys.txt 
     fi
