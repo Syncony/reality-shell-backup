@@ -130,8 +130,8 @@ reality_inbound() {
 				"padding": true,
 				"brutal": {
 					"enabled": true,
-					"up_mbps": 30,
-					"down_mbps": 50
+					"up_mbps": 200,
+					"down_mbps": 200
 				}
 			},
 			"tcp_multi_path": true,
@@ -230,8 +230,8 @@ vless_tcp_inbound() {
 				"padding": true,
 				"brutal": {
 					"enabled": true,
-					"up_mbps": 30,
-					"down_mbps": 50
+					"up_mbps": 200,
+					"down_mbps": 200
 				}
 			},
 			"tcp_multi_path": true,
@@ -264,8 +264,8 @@ ss_inbound() {
 				"padding": true,
 				"brutal": {
 					"enabled": true,
-					"up_mbps": 30,
-					"down_mbps": 50
+					"up_mbps": 200,
+					"down_mbps": 200
 				}
 			},
 			"tcp_multi_path": true,
