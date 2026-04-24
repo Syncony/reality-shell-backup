@@ -253,11 +253,6 @@ make_config() {
 	"log": {
 		"loglevel": "warning"
 	},
-	"dns": {
-		"servers": ["localhost"],
-		"queryStrategy": "UseIP",
-		"serveStale": true
-	},
 	"inbounds": [
 EOF
       read -p "搭建Vless-Reality?[y/N/a](默认采用Shadowsocks/Vless+TCP,键入a追加搭建Vless+Reality)" is_reality
@@ -281,7 +276,6 @@ EOF
 	"outbounds": [
 		{
 			"protocol": "freedom",
-			"domainStrategy": "UseIP",
 			"tag": "direct"
 		},
 		{
